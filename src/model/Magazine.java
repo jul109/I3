@@ -3,8 +3,8 @@ import java.util.GregorianCalendar;
 public final class Magazine extends BibliographicProduct{
 	private String publicationFrequency;
 	private MagazineCategory category;
-	Magazine(String name, int numPages,double value, GregorianCalendar publicationDate, String url,MagazineCategory category, String publicationFrequency ){
-		super(name,numPages, value, publicationDate, url);
+	Magazine(String id,String name, int numPages,double value, GregorianCalendar publicationDate, String url,MagazineCategory category, String publicationFrequency ){
+		super(id,name,numPages, value, publicationDate, url);
 		this.publicationFrequency=publicationFrequency;
 		this.category=category;
 	}

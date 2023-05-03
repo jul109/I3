@@ -9,7 +9,7 @@ public abstract class BibliographicProduct{
 	private String url;
 	private double value;
 	private int solds;
-	BibliographicProduct(String name, int numPages,double value, GregorianCalendar publicationDate, String url){
+	BibliographicProduct(String id,String name, int numPages,double value, GregorianCalendar publicationDate, String url){
 		this.name=name;
 		this.numPages=numPages;
 		this.value=value;
@@ -18,6 +18,7 @@ public abstract class BibliographicProduct{
 		numPages=0;
 		readPages=0;
 		solds=0;
+		this.id=id;
 	}
 	public String getId() {
 	    return id;

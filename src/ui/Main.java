@@ -51,13 +51,14 @@ public class Main{
 
 	}
 	public void addBibliographicProduct(){
+		reader.nextLine();
 		String name="";
 		int numPages=-1;
 		double value=-1;
 		GregorianCalendar publicationDate=null;
 		String url="";
 		System.out.println("Type the name of the product");
-		name=reader.next();
+		name=reader.nextLine();
 		System.out.println("Type the number of pages");
 		numPages=validatePositiveInt();
 		System.out.println("Type the value of the book or the value of the suscription");
@@ -66,11 +67,12 @@ public class Main{
 		publicationDate=requestDate();
 		System.out.println("Type the url");
 		url=reader.next();
+
 		
 		boolean isFinished=false;
 		int option;
 		while(!isFinished){
-			System.out.println("Type the type product type");
+			System.out.println("Type the product type");
 			System.out.println("1 to add a book");
 			System.out.println("2 to add a magazine");
 			option=validatePositiveInt();
@@ -80,7 +82,8 @@ public class Main{
 					String genre="";
 					String msg="";
 					System.out.println("Type the  review of the book");
-					review=reader.next();
+					review=reader.nextLine();
+					reader.nextLine();
 					genre=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
 					msg=controller.addBook(name,numPages,value,publicationDate,url,genre,review);
 					System.out.println(msg);
@@ -92,7 +95,7 @@ public class Main{
 					System.out.println("Type the publication frequency of the magazine");
 					publicationFrequency=reader.next();
 					category=validateStringGivenAnArrayOfPossibleValidStrings(controller.getMagazineCategoriesInStr());
-					msg=controller.addBook(name,numPages,value,publicationDate,url,category,publicationFrequency);
+					msg=controller.addMagazine(name,numPages,value,publicationDate,url,category,publicationFrequency);
 					System.out.println(msg);
 					isFinished=true;
 					break;
@@ -196,6 +199,7 @@ public class Main{
 		return date;
 	}
 	public String validateStringGivenAnArrayOfPossibleValidStrings(String[]options){
+
 		boolean isValid=false;
 		String option="";
 		while(!isValid){

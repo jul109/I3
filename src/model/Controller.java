@@ -4,9 +4,11 @@ import java.util.GregorianCalendar;
 public class Controller{
 	private ArrayList<User> users;
 	private ArrayList<BibliographicProduct> products;
+	private IdGenerator idGenerator;
 	public Controller(){
 		users=new ArrayList<User>();
 		products=new ArrayList<BibliographicProduct>();
+		idGenerator=new IdGenerator();
 	}
 	public User searchUserById(String userId){
 		boolean isFound=false;
@@ -43,18 +45,32 @@ public class Controller{
 	public String addBook(String name, int numPages,double value, GregorianCalendar publicationDate, String url, String genreInStr,String review){
 		String msg="";
 		BookGenre genre= BookGenre.valueOf(genreInStr.toUpperCase());
-		products.add(new Book(name,numPages, value, publicationDate, url, genre, review));
-		msg="The product was added succesfully";
+		String id=idGenerator.generateHexadecimalId();
+		if(id!=""){
+			products.add(new Book(id,name,numPages, value, publicationDate, url, genre, review));
+			msg="The product was added succesfully";
+		}else{
+			msg="The number of books is at limit. It was not possible to add tis product";
+		}
 		return msg;
 
 	}
 	public String addMagazine(String name, int numPages,double value, GregorianCalendar publicationDate, String url,String categoryInStr, String publicationFrequency){
 		String msg="";
 		MagazineCategory category= MagazineCategory.valueOf(categoryInStr.toUpperCase());
-		products.add(new Magazine(name,numPages, value, publicationDate, url, category, publicationFrequency));
-		msg="The product was added sucessfully";
+		String id=idGenerator.generateAlphanumericId();
+		if(id!=""){
+			products.add(new Magazine("1",name,numPages, value, publicationDate, url, category, publicationFrequency));
+			msg="The product was added sucessfully";
+		}else{
+			msg="The number of magazines is at limit. It was not possible to add this product";
+		}
 		return msg;
 	}
+
+/*	public String addProductToUser(){
+
+	}*/
 	public String[] getBookGenresInStr(){
 		BookGenre genres[]=BookGenre.values();
 		String genresInStr[]=new String[genres.length];
@@ -70,6 +86,15 @@ public class Controller{
 			categoriesInStr[i]=categories[i].name();
 		}
 		return categoriesInStr;
+	}
+	public BibliographicProduct searchProductById(String id){
+		BibliographicProduct foundedProduct=null;
+		for (int i=0;i<products.size() ;i++ ) {
+			if( products.get(i).getId().equals(id)) {
+
+			}
+		}
+		return foundedProduct;
 	}
 
 }
