@@ -14,6 +14,9 @@ public class User{
 		this.type=type;
 		products=new ArrayList<BibliographicProduct>();
 	}
+	public String getId(){
+		return this.id;
+	}
 
 
 }
