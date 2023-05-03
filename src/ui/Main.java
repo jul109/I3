@@ -21,14 +21,14 @@ public class Main{
 		while(execute){
 			System.out.println("Type a number");
 			System.out.println("1 to register");
-			System.out.println("2 to ___");
+			System.out.println("2 to register a bibliographic product");
 			option=reader.nextInt();
 			switch (option) {
 				case 1:
 					addUser();
 					break;
 				case 2:
-					System.out.println("Nose");
+					addBibliographicProduct();
 					break;
 				default:
 					execute=false;
@@ -60,10 +60,12 @@ public class Main{
 		name=reader.next();
 		System.out.println("Type the number of pages");
 		numPages=validatePositiveInt();
-		System.out.println("Type the value of the book of the product");
+		System.out.println("Type the value of the book or the value of the suscription");
 		value=validateDoubleInput();
 		System.out.println("Type the publication date of the product");
 		publicationDate=requestDate();
+		System.out.println("Type the url");
+		url=reader.next();
 		
 		boolean isFinished=false;
 		int option;
@@ -74,13 +76,28 @@ public class Main{
 			option=validatePositiveInt();
 			switch (option) {
 				case 1:
-					// code to be executed if expression matches value1
+					String review="";
+					String genre="";
+					String msg="";
+					System.out.println("Type the  review of the book");
+					review=reader.next();
+					genre=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
+					msg=controller.addBook(name,numPages,value,publicationDate,url,genre,review);
+					System.out.println(msg);
+					isFinished=true;
 					break;
 				case 2:
-					// code to be executed if expression matches value2
+					String publicationFrequency="";
+					String category="";
+					System.out.println("Type the publication frequency of the magazine");
+					publicationFrequency=reader.next();
+					category=validateStringGivenAnArrayOfPossibleValidStrings(controller.getMagazineCategoriesInStr());
+					msg=controller.addBook(name,numPages,value,publicationDate,url,category,publicationFrequency);
+					System.out.println(msg);
+					isFinished=true;
 					break;
 				default:
-					// code to be executed if expression doesn't match any of the cases
+					System.out.println("Invalid Option");
 			}
 		}
 
@@ -180,10 +197,10 @@ public class Main{
 	}
 	public String validateStringGivenAnArrayOfPossibleValidStrings(String[]options){
 		boolean isValid=false;
-		String option=";"
+		String option="";
 		while(!isValid){
-			System.out.println("Type an string. These are the possible genres/categories")
-			for(int i=0;i<options;i++){
+			System.out.println("Type an string. These are the possible genres/categories of the product");
+			for(int i=0;i<options.length;i++){
 				System.out.println(options[i]);
 			}
 			option=reader.next();
@@ -192,7 +209,11 @@ public class Main{
 					isValid=true;
 				}
 			}
+			if(!isValid){
+				System.out.println("These is not a valid genre/category");
+			}
 		}
+		return option;
 		
 	}
 

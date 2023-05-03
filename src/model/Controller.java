@@ -40,15 +40,17 @@ public class Controller{
   		return msg;
 	}
 
-	public String addBook(String name, int numPages,double value, GregorianCalendar publicationDate, String url, BookGenre genre,String review){
+	public String addBook(String name, int numPages,double value, GregorianCalendar publicationDate, String url, String genreInStr,String review){
 		String msg="";
+		BookGenre genre= BookGenre.valueOf(genreInStr.toUpperCase());
 		products.add(new Book(name,numPages, value, publicationDate, url, genre, review));
 		msg="The product was added succesfully";
 		return msg;
 
 	}
-	public String addMagazine(String name, int numPages,double value, GregorianCalendar publicationDate, String url,MagazineCategory category, String publicationFrequency){
+	public String addMagazine(String name, int numPages,double value, GregorianCalendar publicationDate, String url,String categoryInStr, String publicationFrequency){
 		String msg="";
+		MagazineCategory category= MagazineCategory.valueOf(categoryInStr.toUpperCase());
 		products.add(new Magazine(name,numPages, value, publicationDate, url, category, publicationFrequency));
 		msg="The product was added sucessfully";
 		return msg;
@@ -69,5 +71,5 @@ public class Controller{
 		}
 		return categoriesInStr;
 	}
-	
+
 }
