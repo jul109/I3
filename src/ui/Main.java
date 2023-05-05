@@ -31,7 +31,7 @@ public class Main{
 					addBibliographicProduct();
 					break;
 				default:
-					execute=false;
+					System.out.println(controller.getProductsInfo());
 			}
 			reader.nextLine();
 		}
@@ -41,12 +41,16 @@ public class Main{
 	public void addUser(){
 		String name="";
 		String id="";
+		String userType="";
 		String msg="";
 		System.out.println("Type your name");
 		name=reader.next();
 		System.out.println("Type your id");
 		id=reader.next();
-		msg=controller.addUser(name,id);
+		System.out.println("Type your user type");
+		userType=validateStringGivenAnArrayOfPossibleValidStrings(controller.getUserTypesInStr());
+
+		msg=controller.addUser(name,id,userType);
 		System.out.println(msg);
 
 	}
@@ -81,9 +85,9 @@ public class Main{
 					String review="";
 					String genre="";
 					String msg="";
+					reader.nextLine();
 					System.out.println("Type the  review of the book");
 					review=reader.nextLine();
-					reader.nextLine();
 					genre=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
 					msg=controller.addBook(name,numPages,value,publicationDate,url,genre,review);
 					System.out.println(msg);
@@ -203,7 +207,7 @@ public class Main{
 		boolean isValid=false;
 		String option="";
 		while(!isValid){
-			System.out.println("Type an string. These are the possible genres/categories of the product");
+			System.out.println("Type an string. These are the possible options");
 			for(int i=0;i<options.length;i++){
 				System.out.println(options[i]);
 			}

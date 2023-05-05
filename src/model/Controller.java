@@ -29,10 +29,10 @@ public class Controller{
 		}
 		return isValid;
 	}
-	public String addUser(String name, String userId){
+	public String addUser(String name, String userId, String userTypeInStr){
 		boolean isValid=validateUserId(userId);
 		String msg="";
-		UserType userType=UserType.valueOf("REGULAR");
+		UserType userType=UserType.valueOf(userTypeInStr.toUpperCase());
 		if(isValid){
 			users.add(new User(name,userId,userType));
 			msg="You have registered succesfully";
@@ -60,7 +60,7 @@ public class Controller{
 		MagazineCategory category= MagazineCategory.valueOf(categoryInStr.toUpperCase());
 		String id=idGenerator.generateAlphanumericId();
 		if(id!=""){
-			products.add(new Magazine("1",name,numPages, value, publicationDate, url, category, publicationFrequency));
+			products.add(new Magazine(id,name,numPages, value, publicationDate, url, category, publicationFrequency));
 			msg="The product was added sucessfully";
 		}else{
 			msg="The number of magazines is at limit. It was not possible to add this product";
@@ -96,5 +96,19 @@ public class Controller{
 		}
 		return foundedProduct;
 	}
+	public String getProductsInfo(){
+		String msg="";
+		for(int i=0;i<products.size();i++){
+			msg+=products.get(i).getInfo();
+			msg+="\n||||||||||||||||||";
+		}
+		return msg;
+	}
+	public String[] getUserTypesInStr(){
+		String[] types={"PREMIUM", "REGULAR"};
+		return types;
+	}
+
+
 
 }

@@ -1,14 +1,15 @@
 package model;
 import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
 public abstract class BibliographicProduct{
-	private String id;
-	private String name;
-	private int numPages;
-	private int readPages;
-	private GregorianCalendar publicationDate;
-	private String url;
-	private double value;
-	private int solds;
+	protected String id;
+	protected String name;
+	protected int numPages;
+	protected int readPages;
+	protected GregorianCalendar publicationDate;
+	protected String url;
+	protected double value;
+	protected int solds;
 	BibliographicProduct(String id,String name, int numPages,double value, GregorianCalendar publicationDate, String url){
 		this.name=name;
 		this.numPages=numPages;
@@ -79,6 +80,24 @@ public abstract class BibliographicProduct{
 	public void setSolds(int solds) {
 	    this.solds = solds;
 	}
+
+	public void readNewPage(){
+		readPages++;
+	}
+
+	/**
+	 * Take a an object of the class GregorianCalendar and return an string that represents it
+ 	* @param  calendar instance of the class GregorianCalendar
+	* @return An string of the calendar
+ 	*/
+
+	public static String calendarToString(GregorianCalendar calendar) {
+    	SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    	String dateInTxtx = format.format(calendar.getTime());
+    	return dateInTxtx;
+	}
+
+	public abstract String getInfo();
 
 
 }	

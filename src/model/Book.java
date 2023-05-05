@@ -23,6 +23,20 @@ public final class Book extends BibliographicProduct{
 	public void setGenre(BookGenre genre) {
 	    this.genre = genre;
 	}
+	@Override
+	public String getInfo() {
+    String info = "";
+    info += "ID: " + super.id + "\n";
+    info += "Name: " + super.name + "\n";
+    info += "Number of Pages: " + super.numPages + "\n";
+    info += "Value: $" + super.value + "\n";
+    info += "Publication Date: " + super.calendarToString(super.publicationDate) + "\n";
+    info += "URL: " + super.url + "\n";
+    info += "Genre: " + genre.name() + "\n";
+    info += "Review: " + review;
+    return info;
+}
+
 
 
 }

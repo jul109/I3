@@ -22,6 +22,20 @@ public final class Magazine extends BibliographicProduct{
 	public void setCategory(MagazineCategory category) {
 	    this.category = category;
 	}
+    @Override
+	public String getInfo() {
+	    String info = "";
+	    info += "ID: " + super.id + "\n";
+	    info += "Name: " + super.name + "\n";
+	    info += "Number of Pages: " + super.numPages + "\n";
+	    info += "Value: " + super.value + "\n";
+	    info += "Publication Date: " + super.calendarToString(super.publicationDate) + "\n";
+	    info += "URL: " + super.url + "\n";
+	    info += "Category: " + category.name() + "\n";
+	    info += "Publication Frequency: " + publicationFrequency;
+	    return info;
+	}
+
 	
 
 
