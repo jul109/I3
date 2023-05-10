@@ -22,6 +22,7 @@ public class Main{
 			System.out.println("Type a number");
 			System.out.println("1 to register");
 			System.out.println("2 to register a bibliographic product");
+			System.out.println("3 to modify a modify a bibliographic product");
 			option=reader.nextInt();
 			switch (option) {
 				case 1:
@@ -30,6 +31,8 @@ public class Main{
 				case 2:
 					addBibliographicProduct();
 					break;
+				case 3:
+					validateProductToModify(); //if the id is valid, this functions calls modifyProduct();
 				default:
 					System.out.println(controller.getProductsInfo());
 			}
@@ -224,6 +227,85 @@ public class Main{
 		return option;
 		
 	}
+	public void requestFieldToModify(String productId, int productTypeFlag){
+
+		int option=-1;
+		while(option==-1){
+			System.out.println("Type an integer according to the field that you want to modify");
+			System.out.println("1. name");
+			System.out.println("2. url");
+			System.out.println("3. genre (book) /category (magazine)");
+			System.out.println("4. review (book)/publicationFrequency (magazine)");
+			System.out.println("5. number of pages");
+			System.out.println("6. number of read pages");
+			System.out.println("7. number of solds");
+			System.out.println("8. price (book) / suscription cost (magazine)");
+			System.out.println("9 publication date");
+			option=validateIntegerInput();
+			if(  !(1<=option &&option<=9) ){
+				System.out.println("Invalid option");
+			}
+		}
+		int dataType=0;
+		if(1<=option && option<=4){
+			dataType=1; //String
+		}
+		if(5<=option && option<=7){
+			dataType=2; //entero
+		}
+		if(option==8){
+			dataType=3; //double
+		}
+		if(option==9){
+			dataType=4; //gregorianCalendar
+		}
+
+
+
+
+
+	}//¿Como las personas adquieren los productos, con el id;
+	//Lo de la referencia sirve?
+	//Si se elimina un producto, se le elimina tambien a las personas personas que lo compraron?
+	//si se modifica el numero de paginas de un libro, se modifica tambien ese arreglo de booleanos, la cuenta regresa a 
+	//a 0 o que
+
+	public void validateProductToModify(){
+		String id="";
+		System.out.println("Type the id of the product");
+		id=reader.next();
+		int productTypeFlag= controller.getProductTypeFlag(id);
+		if(productTypeFlag==0){
+			System.out.println("There is no any product with this id");
+		}else{
+			requestFieldToModify(id, productTypeFlag);
+		}
+	}
+
+	public void modifyProduct(String productId, int productTypeFlag, int field, int dataType){
+		System.out.println("Type the new value of the field");
+		switch (dataType) {
+			case 1: //String
+				String newStrValue="";
+				if(field==3&&productTypeFlag==1){
+					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
+				}
+				if(field==3&&productTypeFlag==2){
+					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getMagazineCategoriesInStr());
+				}
+				if(field!=3){
+					newStrValue=reader.next();
+				}
+				break;
+			case 2: //integer
+				int newIntValue=-1;
+
+				break;
+			default:
+				// code to be executed if expression doesn't match any of the cases
+		}
+	}
+
 
 
 

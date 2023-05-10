@@ -56,7 +56,6 @@ public abstract class BibliographicProduct{
 	public void setName(String name) {
 	    this.name = name;
 	}
-
 	public void setNumPages(int numPages) {
 	    this.numPages = numPages;
 	}
@@ -83,6 +82,9 @@ public abstract class BibliographicProduct{
 
 	public void readNewPage(){
 		readPages++;
+	}
+	public void setId(String id){
+		this.id=id;
 	}
 
 	/**
