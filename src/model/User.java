@@ -8,6 +8,8 @@ public class User{
 	private GregorianCalendar vinculationDate;
 	private ArrayList<BibliographicProductReference> products;
 	private UserType type;
+	public static final int MAX_BOOKS=2;
+	public static final int MAX_MAGAZINES=2;
 	//private 
 	User(String name,String id,UserType type){
 		this.name=name;
@@ -23,9 +25,23 @@ public class User{
 		if(searchProduct(product.getId())!=null){
 			msg="This product was added to your library previusly";
 		}else{
+			if(product instanceof Book){
+				if(validateBookAddition()){
+					products.add(new BibliographicProductReference (product));
+					msg="The book was added succesfully";
+				}else{
+					msg="The number of books in your account is at limit";
+				}
+			}
 
-			products.add(new BibliographicProductReference (product));
-			msg="The product was added succesfully";
+			if(product instanceof Magazine){
+				if(validateMagazineAddition()){
+					products.add(new BibliographicProductReference (product));
+					msg="The magazine was added succesfully";
+				}else{
+					msg="The number of magazines in your account is at limit";
+				}
+			}
 		}	
 		return msg;
 	}
@@ -37,6 +53,54 @@ public class User{
 			}
 		}
 		return foundedProduct;
+	}
+
+	public boolean validateBookAddition(){
+		boolean isPossibleToAdd=false;;
+		if(type.name()=="REGULAR"){
+			int cont=0;
+			boolean flag=false; 
+			for (int i=0;i<products.size()&&!flag;i++ ) {
+				if(products.get(i).getProduct() instanceof Book){
+					cont++;
+				}
+				if(cont==MAX_BOOKS){
+					flag=true;
+				}
+			}
+			if(cont<MAX_BOOKS){
+				isPossibleToAdd=true;
+			}
+
+			
+		}else{	
+			isPossibleToAdd=true;
+		}	
+		return isPossibleToAdd;
+	}
+
+	public boolean validateMagazineAddition(){
+		boolean isPossibleToAdd=false;;
+		if(type.name()=="REGULAR"){
+			int cont=0;
+			boolean flag=false; 
+			for (int i=0;i<products.size()&&!flag;i++ ) {
+				if(products.get(i).getProduct() instanceof Magazine){
+					cont++;
+				}
+				if(cont==MAX_MAGAZINES){
+					flag=true;
+				}
+			}
+			if(cont<MAX_MAGAZINES){
+				isPossibleToAdd=true;
+			}
+
+			
+		}else{	
+			isPossibleToAdd=true;
+		}
+		return isPossibleToAdd;	
 	}
 
 	

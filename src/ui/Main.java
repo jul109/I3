@@ -23,6 +23,9 @@ public class Main{
 			System.out.println("1 to register");
 			System.out.println("2 to register a bibliographic product");
 			System.out.println("3 to modify a modify a bibliographic product");
+			System.out.println("4 to delete a bibliographic product");
+			System.out.println("5 to create biliographic and user objects");
+			System.out.println("6 to buy a book or magazine");
 			option=reader.nextInt();
 			switch (option) {
 				case 1:
@@ -33,6 +36,16 @@ public class Main{
 					break;
 				case 3:
 					validateProductToModify(); //if the id is valid, this functions calls modifyProduct();
+					break;
+				case 4:
+					deleteProduct();
+					break;
+				case 5:
+					createObjects();
+					break;
+				case 6:
+					addProductToUser();
+					break;
 				default:
 					System.out.println(controller.getProductsInfo());
 			}
@@ -69,7 +82,7 @@ public class Main{
 		System.out.println("Type the number of pages");
 		numPages=validatePositiveInt();
 		System.out.println("Type the value of the book or the value of the suscription");
-		value=validateDoubleInput();
+		value=validateNonNegativeDouble();
 		System.out.println("Type the publication date of the product");
 		publicationDate=requestDate();
 		System.out.println("Type the url");
@@ -146,6 +159,16 @@ public class Main{
 		}
 		return value;
 	}
+	public int validateNonNegativeInt(){
+		int value=-1;
+		while(value<0){
+			value=validateIntegerInput();
+			if(value<0){
+				System.out.println("Invalid value");
+			}
+		}
+		return value;
+	}
     /** Reads the input of the user. If the user typed a non double value, returns -1.
     * 
     * @return The value that was registered by the user, or -1 if the user didn't type a double.
@@ -159,15 +182,15 @@ public class Main{
 		}
 		return num;
 	}
-    /** Put the user in a loop until he types a positive double
+    /** Puts the user in a loop until he types a non negative double
     * 
-    * @return A positive double
+    * @return A non negative double
     */
-	public double validatePositiveDouble(){
+	public double validateNonNegativeDouble(){
 		double value=-1.0;
-		while(value<=0){
+		while(value<0){
 			value=validateDoubleInput();
-			if(value<=0){
+			if(value<0){
 				System.out.println("Invalid value");
 			}
 		}
@@ -227,10 +250,11 @@ public class Main{
 		return option;
 		
 	}
+
 	public void requestFieldToModify(String productId, int productTypeFlag){
 
 		int option=-1;
-		while(option==-1){
+		while(  !(1<=option &&option<=9)){
 			System.out.println("Type an integer according to the field that you want to modify");
 			System.out.println("1. name");
 			System.out.println("2. url");
@@ -241,9 +265,9 @@ public class Main{
 			System.out.println("7. number of solds");
 			System.out.println("8. price (book) / suscription cost (magazine)");
 			System.out.println("9 publication date");
-			option=validateIntegerInput();
+			option=validatePositiveInt();
 			if(  !(1<=option &&option<=9) ){
-				System.out.println("Invalid option");
+				System.out.println("This is not a possible option");
 			}
 		}
 		int dataType=0;
@@ -259,6 +283,7 @@ public class Main{
 		if(option==9){
 			dataType=4; //gregorianCalendar
 		}
+		modifyProduct(productId, productTypeFlag, option, dataType);
 
 
 
@@ -281,29 +306,93 @@ public class Main{
 			requestFieldToModify(id, productTypeFlag);
 		}
 	}
+	public void addProductToUser(){
+		boolean val1=false; //
+		boolean val2=false;
+		String userId="";
+		String productId="";
+		String msg="";
+		System.out.println("Type your id");
+		userId=reader.next();
+		if(! (controller.validateUserId(userId)) ){
+			val1=true;
+		}else{
+			System.out.println("There is no any user with this id");
+		}
+		if(val1){
+			System.out.println("Type the id of the product");
+			productId=reader.next();
+			if(controller.validateProductId(productId)){
+				msg=controller.addProductToUser(userId,productId);
+				System.out.println(msg);
+			}else{
+				System.out.println("There is no any product with this id");
+			}
+
+		}
+
+	}
 
 	public void modifyProduct(String productId, int productTypeFlag, int field, int dataType){
 		System.out.println("Type the new value of the field");
 		switch (dataType) {
 			case 1: //String
 				String newStrValue="";
-				if(field==3&&productTypeFlag==1){
+				if(field==3&&productTypeFlag==1){ //Book genre
 					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
 				}
-				if(field==3&&productTypeFlag==2){
+				if(field==3&&productTypeFlag==2){ //Magazine Category
 					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getMagazineCategoriesInStr());
 				}
-				if(field!=3){
+				if(field==1|| (field==4&& productTypeFlag==1)){ //product name|| book review
+					//reader.nextLine();
+					newStrValue=reader.nextLine();
+
+				}
+				if(field==2){ //url
 					newStrValue=reader.next();
 				}
+				controller.modifyProduct(productId,field,newStrValue);
 				break;
 			case 2: //integer
 				int newIntValue=-1;
+				if(field==5){// num pages
+					newIntValue=validatePositiveInt(); 
+				}else{ //read Pages/solds
+					newIntValue=validateNonNegativeInt(); 
+				}
+				controller.modifyProduct(productId,field,newIntValue);
 
 				break;
-			default:
-				// code to be executed if expression doesn't match any of the cases
+			case 3:
+				double newDoubleValue=-1; //price ||suscription
+				newDoubleValue=validateNonNegativeDouble();
+				controller.modifyProduct(productId,field,newDoubleValue);
+				break;
+			case 4:
+				GregorianCalendar newGregorianCalendarValue= requestDate();
+				controller.modifyProduct(productId,field,newGregorianCalendarValue);
+				break;
+
 		}
+
+
+	}
+	public void deleteProduct(){
+		String msg="";
+		String id="";
+		System.out.println("Type the id of the product that you want to delete");
+		id=reader.next();
+		msg=controller.deleteProduct(id);
+		System.out.println(msg);
+	}
+	public void createObjects(){
+		int num;
+		System.out.println("Type the number of objects that will be created");
+		num=validatePositiveInt();
+		controller.initProducts(num);
+		controller.initUsers(num);
+		System.out.println("The objects have been created succesfully");
 	}
 
 

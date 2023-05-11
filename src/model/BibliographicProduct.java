@@ -1,6 +1,7 @@
 package model;
 import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 public abstract class BibliographicProduct{
 	protected String id;
 	protected String name;
@@ -10,6 +11,7 @@ public abstract class BibliographicProduct{
 	protected String url;
 	protected double value;
 	protected int solds;
+	private ArrayList<User> users;
 	BibliographicProduct(String id,String name, int numPages,double value, GregorianCalendar publicationDate, String url){
 		this.name=name;
 		this.numPages=numPages;

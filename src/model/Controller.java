@@ -29,6 +29,15 @@ public class Controller{
 		}
 		return isValid;
 	}
+
+	public boolean validateProductId(String productId){
+		BibliographicProduct product=searchProductById(productId);
+		boolean isValid=true;
+		if(product==null){
+			isValid=false;
+		}
+		return isValid;
+	}
 	public String addUser(String name, String userId, String userTypeInStr){
 		boolean isValid=validateUserId(userId);
 		String msg="";
@@ -68,9 +77,13 @@ public class Controller{
 		return msg;
 	}
 
-/*	public String addProductToUser(){
-
-	}*/
+	public String addProductToUser(String userId, String productId){
+		BibliographicProduct product=searchProductById(productId);
+		User user=searchUserById(userId);
+		String msg="";
+		msg=user.addProduct(product);
+		return msg;
+	}
 	public String[] getBookGenresInStr(){
 		BookGenre genres[]=BookGenre.values();
 		String genresInStr[]=new String[genres.length];
@@ -91,10 +104,23 @@ public class Controller{
 		BibliographicProduct foundedProduct=null;
 		for (int i=0;i<products.size() ;i++ ) {
 			if( products.get(i).getId().equals(id)) {
-
+				foundedProduct=products.get(i);
 			}
 		}
 		return foundedProduct;
+	}
+
+	public String deleteProduct(String productId){
+		boolean isFound=false;
+		String msg="There is no any product with this id";
+		for(int i=0;i<products.size()&&!isFound;i++){
+			if(products.get(i).getId().equals(productId)){
+				isFound=true;
+				products.remove(i);
+				msg="The product was deleted succesfully";
+			}
+		}
+		return msg;
 	}
 	public int getProductTypeFlag(String id){
 		int isValid=0;
@@ -123,7 +149,8 @@ public class Controller{
 		return types;
 	}
 
-	public void ModifyProduct(BibliographicProduct product, int field, String newStatus){
+	public void modifyProduct(String productId, int field, String newStatus){
+		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //1-4
 			case 1: //name
 				product.setName(newStatus);
@@ -154,7 +181,8 @@ public class Controller{
 				break;				
 		}
 	}
-	public String ModifyProduct(BibliographicProduct product, int field, int newStatus){
+	public void modifyProduct(String productId, int field, int newStatus){
+		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //5-7
 			case 5: //NumPages
 				product.setNumPages(newStatus);
@@ -167,26 +195,58 @@ public class Controller{
 				break;
 				
 		}
-		String msg="The field has been modified succesfully";
-		return msg;
 	}
-	public String modifyProduct(BibliographicProduct product, int field, double newStatus ){
+	public void modifyProduct(String productId, int field, double newStatus ){
+		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //8
 			case 8:
 				product.setValue(newStatus);
 				break;
 		}
-		String msg="The field has been modified succesfully";
-		return msg;
 	}
-	public String modifyProduct(BibliographicProduct product, int field, GregorianCalendar newStatus){
+	public void modifyProduct(String productId, int field, GregorianCalendar newStatus){
+		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //9
 			case 9: 
 				product.setPublicationDate(newStatus);
 				break;
 		}
-		String msg="The field has been modified succesfully";
-		return msg;
+
+	}
+
+	public void initProducts(int num){
+		for (int i=0;i<num ;i++ ) {
+			String id= idGenerator.generateAlphanumericId();
+			String name="name";
+			int numPages=10;
+			double value=5.5;
+			GregorianCalendar publicationDate=new GregorianCalendar();
+			String url="url";
+			MagazineCategory category= MagazineCategory.valueOf("VARIETY");
+			String publicationFrequency="daily";
+			products.add(new Magazine(id,name,numPages, value, publicationDate, url, category, publicationFrequency));
+		}
+		for(int i=0;i< num;i++){
+			String id=idGenerator.generateHexadecimalId();
+			String name="nombre";
+			int numPages=10;
+			double value=5.5;
+			GregorianCalendar publicationDate=new GregorianCalendar();
+			String url="url";
+			BookGenre genre= BookGenre.valueOf("FANTASY");
+			String review="awesome !";
+			products.add(new Book(id,name,numPages, value, publicationDate, url, genre, review));
+		}
+		
+	}
+	
+	public void initUsers(int num){
+		String name="pedro";
+		String userId="1";
+		for(int i=0;i<num;i++){
+			users.add(new User(name,userId,UserType.valueOf("REGULAR")));
+			users.add(new User(name,userId,UserType.valueOf("PREMIUM")));
+		}
 	}
 
 

@@ -6,7 +6,6 @@ public class BibliographicProductReference {
     private boolean[] readPages;
     private GregorianCalendar operationDate;
     private double invoiceValue;
-    
 
     BibliographicProductReference(BibliographicProduct product){
     	this.product=product;
