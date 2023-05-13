@@ -135,11 +135,12 @@ public class User{
 	}
 
 	public String[][][] getLibrary(){
-		int numberOfMatrices=(int)(MATRIX_SIZE+products.size()-1)/MATRIX_SIZE;
-		String matrix[][][]=new String[numberOfMatrices][MATRIX_SIZE][MATRIX_SIZE];
+		int numberOfMatrices=(int)(MATRIX_SIZE*MATRIX_SIZE+products.size()-1)/(MATRIX_SIZE*MATRIX_SIZE);
 		if(numberOfMatrices==0){
 			numberOfMatrices=1;
 		}
+		String matrix[][][]=new String[numberOfMatrices][MATRIX_SIZE][MATRIX_SIZE];
+		
 		for(int h=0;h<numberOfMatrices;h++){
 			for (int i=0;i<MATRIX_SIZE ;i++ ) {
 				for (int j=0;j<MATRIX_SIZE ;j++ ) {

@@ -27,8 +27,8 @@ public class Main{
 			System.out.println("5 to create biliographic and user objects");
 			System.out.println("6 to buy a book or magazine");
 			System.out.println("7 to cancel a magazin suscription");
-			System.out.println("8 to start a reading session");
-			System.out.println("9 to see your library");
+			System.out.println("8 to see your library");
+			
 			option=reader.nextInt();
 			switch (option) {
 				case 1:
@@ -53,10 +53,10 @@ public class Main{
 					deleteProductToUser();
 					break;
 				case 8:
-					startReadingSession();
+					showUserLibrary();
 					break;
 				case 9:
-					showUserLibrary();
+					
 					break;
 				default:
 					System.out.println(controller.getProductsInfo());
@@ -90,7 +90,7 @@ public class Main{
 		GregorianCalendar publicationDate=null;
 		String url="";
 		System.out.println("Type the name of the product");
-		name=reader.nextLine();
+		name=reader.next();
 		System.out.println("Type the number of pages");
 		numPages=validatePositiveInt();
 		System.out.println("Type the value of the book or the value of the suscription");
@@ -113,9 +113,9 @@ public class Main{
 					String review="";
 					String genre="";
 					String msg="";
-					reader.nextLine();
+					//reader.nextLine();
 					System.out.println("Type the  review of the book");
-					review=reader.nextLine();
+					review=reader.next();
 					genre=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
 					msg=controller.addBook(name,numPages,value,publicationDate,url,genre,review);
 					System.out.println(msg);
@@ -141,62 +141,55 @@ public class Main{
 
 	}
 
-	public void startReadingSession(){
-		String[] userAndProductId=requestUserAndProductId();
-		if(!userAndProductId[0].equals("")){
-			String option="";
-			boolean execute=true;
-			Object []readingSessionInfo=controller.getReadingSessionInfo(userAndProductId[1]);
-			int numPages= (int) readingSessionInfo[1];
-			int currentPage=1;
-			
-
-			String name=(String)readingSessionInfo[0];
-			
-			while(execute){
-				boolean ad=controller.readingSessionAd(userAndProductId[0],userAndProductId[1],currentPage);
-				if(ad){
-					System.out.println("");
-					System.out.println(controller.getAd());
-					System.out.println("");
-				}
-				System.out.println("Reading session in progress\n");
-				System.out.println("Reading: "+ name);
-				System.out.println("Page: "+currentPage);
-				System.out.println("A to go to the previous page");
-				System.out.println("S to go the the next page");
-				System.out.println("B to exit");
-				option=reader.next();
-				
-				if(option.equalsIgnoreCase("S")){
-					if(currentPage<numPages){
-						currentPage++;
-					}
-				}
-
-				if(option.equalsIgnoreCase("A")){
-					if(currentPage>1){
-						currentPage--;
-					}
-				}
-				if(option.equalsIgnoreCase("B")){
-					execute=false;
-				}
-
-				if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") )){
-					System.out.println("Invalid Option");
-				}
-				
-
-
+	public void startReadingSession(String userId, String productId){
+		String option="";
+		boolean execute=true;
+		Object []readingSessionInfo=controller.getReadingSessionInfo(productId);
+		int numPages= (int) readingSessionInfo[1];
+		String name=(String)readingSessionInfo[0];
+		int currentPage=1;
+		while(execute){
+			boolean ad=controller.readingSessionAd(userId,productId,currentPage);
+			if(ad){
+				System.out.println("");
+				System.out.println(controller.getAd());
+				System.out.println("");
 			}
-
-
-
-
+			System.out.println("Reading session in progress\n");
+			System.out.println("Reading: "+ name);
+			System.out.println("Page: "+currentPage);
+			System.out.println("A to go to the previous page");
+			System.out.println("S to go the the next page");
+			System.out.println("B to exit");
+			option=reader.next();
+			
+			if(option.equalsIgnoreCase("S")){
+				if(currentPage<numPages){
+					currentPage++;
+				}
+			}
+			if(option.equalsIgnoreCase("A")){
+				if(currentPage>1){
+					currentPage--;
+				}
+			}
+			if(option.equalsIgnoreCase("B")){
+				execute=false;
+			}
+			if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") )){
+				System.out.println("Invalid Option");
+			}
+			
 
 		}
+
+
+
+
+
+		
 	}
+
 
 	public void showUserLibrary(){
 		String userId=requestUserId();
@@ -207,10 +200,14 @@ public class Main{
 			String option="";
 			boolean execute=true;
 			while(execute){
+
 				showMatrix(library[currentPage]);
 				System.out.println("A to go to the previous page");
 				System.out.println("S to go the the next page");
 				System.out.println("B to exit");
+				System.out.println("C to type the coordinates of a product and start a reading session");
+				System.out.println("V to type the id of a product and start a reading session");
+				System.out.println("current page: " +(currentPage+1));
 				option=reader.next();
 				if(option.equalsIgnoreCase("A")){
 					if(currentPage>0){
@@ -227,13 +224,56 @@ public class Main{
 					execute=false;
 				}
 
-				if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") )){
+				if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") ||option.equalsIgnoreCase("C")||option.equalsIgnoreCase("V"))){
 					System.out.println("Invalid Option");
 				}
+				if(option.equalsIgnoreCase("C")){
+					int[] coordinates=validateCoordinates();
+					int x=coordinates[0];
+					int y=coordinates[1];
+					if(!library[currentPage][y][x].equals("")){
+						startReadingSession(userId, library[currentPage][y][x]);
+					}else{
+						System.out.println("These coordinates are empty");
+					}
+				}
+				if(option.equalsIgnoreCase("V")){
+					System.out.println("Type the product id");
+					String productId=reader.next();
+					if(controller.userHasProduct(userId,productId)){
+						startReadingSession(userId,productId);
+					}else{
+						System.out.println("There is no any product with this id in your library");
+					}
+				}
+				
 			}
 
 
 		}
+	}
+
+
+	public int[] validateCoordinates(){
+		int x=-1;
+		int y=-1;
+		while( !(0<=x &&x<=4)){
+			System.out.println("Type the coordinate X");
+			x=validateNonNegativeInt();
+			if( !(0<=x &&x<=4) ){
+				System.out.println("Invalid value");
+			}
+		}
+		while( !(0<=y &&y<=4) ) {
+			System.out.println("Type the coordinate Y");
+			y=validateNonNegativeInt();
+			if( !(0<=y &&y<=4) ){
+				System.out.println("Invalid value");
+			}
+		}
+		int[] coordinates={x,y};
+		return coordinates;
+
 	}
 
 	/*||||||||||||||||||||||||||||VALIDATION FUNCTIONS||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -449,7 +489,7 @@ public class Main{
 				}
 				if(field==1|| (field==4&& productTypeFlag==1)){ //product name|| book review
 					//reader.nextLine();
-					newStrValue=reader.nextLine();
+					newStrValue=reader.next();
 
 				}
 				if(field==2){ //url
@@ -490,12 +530,14 @@ public class Main{
 		System.out.println(msg);
 	}
 	public void createObjects(){
-		int num;
+		int num=0;
 		System.out.println("Type the number of objects that will be created");
 		num=validatePositiveInt();
-		controller.initProducts(num);
-		controller.initUsers(num);
-		System.out.println("The objects have been created succesfully");
+		controller.initObjects(num);
+		
+		System.out.println(num+ " books and "+num+ " magazines were registered ");
+		System.out.println("These products were added to the library of the premium user with id 2.");
+		System.out.println("If the number of product is not at the limit, the regular user with id 1 also has the same products in his library");
 	}
 
 	public String requestUserId(){

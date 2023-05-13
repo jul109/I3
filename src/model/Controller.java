@@ -209,7 +209,10 @@ public class Controller{
 
 	}
 
-	public void initProducts(int num){
+	public void initObjects(int num){
+		initUsers();
+		User user1=searchUserById("1");
+		User user2=searchUserById("2");
 		for (int i=0;i<num ;i++ ) {
 			String id= idGenerator.generateAlphanumericId();
 			String name="name";
@@ -219,7 +222,11 @@ public class Controller{
 			String url="url";
 			MagazineCategory category= MagazineCategory.valueOf("VARIETY");
 			String publicationFrequency="daily";
-			products.add(new Magazine(id,name,numPages, value, publicationDate, url, category, publicationFrequency));
+			BibliographicProduct product=new Magazine(id,name,numPages, value, publicationDate, url, category, publicationFrequency);
+			products.add(product);
+			user1.addProduct(product);
+			user2.addProduct(product);
+
 		}
 		for(int i=0;i< num;i++){
 			String id=idGenerator.generateHexadecimalId();
@@ -230,17 +237,20 @@ public class Controller{
 			String url="url";
 			BookGenre genre= BookGenre.valueOf("FANTASY");
 			String review="awesome !";
-			products.add(new Book(id,name,numPages, value, publicationDate, url, genre, review));
+			BibliographicProduct product=new Book(id,name,numPages, value, publicationDate, url, genre, review);
+			products.add(product);
+			user1.addProduct(product);
+			user2.addProduct(product);
 		}
 		
 	}
 	
-	public void initUsers(int num){
-		String name="pedro";
-		String userId="1";
-		for(int i=0;i<num;i++){
-			users.add(new User(name,userId,UserType.valueOf("REGULAR")));
-			users.add(new User(name,userId,UserType.valueOf("PREMIUM")));
+	public void initUsers(){
+		if(searchUserById("1")==null){
+			users.add(new User("Pedroregular","1",UserType.valueOf("REGULAR")));
+		}
+		if(searchUserById("2")==null){
+			users.add(new User("pedro premium","2",UserType.valueOf("PREMIUM")));
 		}
 	}
 
@@ -296,6 +306,16 @@ public class Controller{
 		User user= searchUserById(userId);
 		String[][][] library=user.getLibrary();
 		return library;
+	}
+	public boolean userHasProduct(String userId,String productId){
+		boolean flag=false;
+		User user=searchUserById(userId);
+		if(user!=null){
+			if(user.searchProduct(productId)!=null){
+				flag=true;
+			}
+		}
+		return flag;
 	}
 
 
