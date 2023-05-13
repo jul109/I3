@@ -249,11 +249,17 @@ public class Controller{
 		String msg="There is no any product with this id";
 		for (int i=0;i<products.size() &&!wasFound ;i++ ) {
 			if(products.get(i).getId().equals(id)){
-				products.remove(i);
+				
 				wasFound=true;
 				for(int j=0;j<users.size();j++){
-					deleteProduct(id);
+					ArrayList<BibliographicProductReference> references= users.get(j).getReferences();
+					for(int k=0;k<references.size();k++){
+						if(references.get(k).getId().equals(id)){
+							references.remove(k);
+						}
+					}
 				}
+				products.remove(i);
 				msg="The product was deleted succesfully";
 			}
 		}
@@ -285,6 +291,13 @@ public class Controller{
 	public String getAd(){
 		return adGenerator.getAd();
 	}
+
+	public String[][][] getLibrary(String userId){
+		User user= searchUserById(userId);
+		String[][][] library=user.getLibrary();
+		return library;
+	}
+
 
 
 

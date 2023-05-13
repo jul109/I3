@@ -10,6 +10,7 @@ public class User{
 	private UserType type;
 	public static final int MAX_BOOKS=2;
 	public static final int MAX_MAGAZINES=2;
+	public static final int MATRIX_SIZE=5;
 	//private 
 	User(String name,String id,UserType type){
 		this.name=name;
@@ -64,7 +65,7 @@ public class User{
 				if(products.get(i).getProduct() instanceof Book){
 					cont++;
 				}
-				if(cont==MAX_BOOKS){
+				if(cont>=MAX_BOOKS){
 					flag=true;
 				}
 			}
@@ -88,7 +89,7 @@ public class User{
 				if(products.get(i).getProduct() instanceof Magazine){
 					cont++;
 				}
-				if(cont==MAX_MAGAZINES){
+				if(cont>=MAX_MAGAZINES){
 					flag=true;
 				}
 			}
@@ -127,6 +128,30 @@ public class User{
 			ad=false;
 		}
 		return ad;
+	}
+
+	public ArrayList<BibliographicProductReference> getReferences(){
+		return this.products;
+	}
+
+	public String[][][] getLibrary(){
+		int numberOfMatrices=(int)(MATRIX_SIZE+products.size()-1)/MATRIX_SIZE;
+		String matrix[][][]=new String[numberOfMatrices][MATRIX_SIZE][MATRIX_SIZE];
+		for(int h=0;h<numberOfMatrices;h++){
+			for (int i=0;i<MATRIX_SIZE ;i++ ) {
+				for (int j=0;j<MATRIX_SIZE ;j++ ) {
+					int pos=(h*MATRIX_SIZE*MATRIX_SIZE)+(i* MATRIX_SIZE)+j;
+					if(pos<products.size()){
+						matrix[h][i][j]=products.get(pos).getId();
+
+					}else{
+						matrix[h][i][j]="";
+					}
+				}
+			}
+		}
+		return matrix;
+
 	}
 
 	

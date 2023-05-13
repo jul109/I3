@@ -28,6 +28,7 @@ public class Main{
 			System.out.println("6 to buy a book or magazine");
 			System.out.println("7 to cancel a magazin suscription");
 			System.out.println("8 to start a reading session");
+			System.out.println("9 to see your library");
 			option=reader.nextInt();
 			switch (option) {
 				case 1:
@@ -53,6 +54,9 @@ public class Main{
 					break;
 				case 8:
 					startReadingSession();
+					break;
+				case 9:
+					showUserLibrary();
 					break;
 				default:
 					System.out.println(controller.getProductsInfo());
@@ -159,6 +163,9 @@ public class Main{
 				System.out.println("Reading session in progress\n");
 				System.out.println("Reading: "+ name);
 				System.out.println("Page: "+currentPage);
+				System.out.println("A to go to the previous page");
+				System.out.println("S to go the the next page");
+				System.out.println("B to exit");
 				option=reader.next();
 				
 				if(option.equalsIgnoreCase("S")){
@@ -187,6 +194,18 @@ public class Main{
 
 
 
+
+		}
+	}
+
+	public void showUserLibrary(){
+		String userId=requestUserId();
+		if(!userId.equals("")){
+			String[][][] library=controller.getLibrary(userId);
+			showMatrix(library[0]);
+			System.out.println("A to go to the previous page");
+			System.out.println("S to go the the next page");
+			System.out.println("B to exit");
 
 		}
 	}
@@ -375,6 +394,20 @@ public class Main{
 			System.out.println(msg);
 		}
 
+	}
+	public void showMatrix(String matrix[][]){
+		int row=matrix.length;
+		int col=matrix[0].length;
+		System.out.println("       0    1    2    3    4");
+
+		for (int i=0;i<row ;i++ ) {
+			System.out.print("  "+i+"  ");
+			for (int j=0;j<col ;j++ ) {
+				System.out.print(" "+matrix[i][j]+" ");
+
+			}
+			System.out.print("\n\n");
+		}
 	}
 
 	public void modifyProduct(String productId, int productTypeFlag, int field, int dataType){
