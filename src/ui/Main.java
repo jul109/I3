@@ -202,10 +202,36 @@ public class Main{
 		String userId=requestUserId();
 		if(!userId.equals("")){
 			String[][][] library=controller.getLibrary(userId);
-			showMatrix(library[0]);
-			System.out.println("A to go to the previous page");
-			System.out.println("S to go the the next page");
-			System.out.println("B to exit");
+			int numPages=library.length;
+			int currentPage=0;
+			String option="";
+			boolean execute=true;
+			while(execute){
+				showMatrix(library[currentPage]);
+				System.out.println("A to go to the previous page");
+				System.out.println("S to go the the next page");
+				System.out.println("B to exit");
+				option=reader.next();
+				if(option.equalsIgnoreCase("A")){
+					if(currentPage>0){
+						currentPage--;
+					}
+				}
+				if(option.equalsIgnoreCase("S")){
+					if(currentPage<numPages-1){
+						currentPage++;
+					}
+
+				}
+				if(option.equalsIgnoreCase("B")){
+					execute=false;
+				}
+
+				if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") )){
+					System.out.println("Invalid Option");
+				}
+			}
+
 
 		}
 	}
