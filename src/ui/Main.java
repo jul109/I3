@@ -20,12 +20,14 @@ public class Main{
 		int option;
 		while(execute){
 			System.out.println("Type a number");
-			System.out.println("1 to register");
+			System.out.println("1 to register a user");
 			System.out.println("2 to register a bibliographic product");
 			System.out.println("3 to modify a modify a bibliographic product");
 			System.out.println("4 to delete a bibliographic product");
 			System.out.println("5 to create biliographic and user objects");
 			System.out.println("6 to buy a book or magazine");
+			System.out.println("7 to cancel a magazin suscription");
+			System.out.println("8 to start a reading session");
 			option=reader.nextInt();
 			switch (option) {
 				case 1:
@@ -45,6 +47,12 @@ public class Main{
 					break;
 				case 6:
 					addProductToUser();
+					break;
+				case 7:
+					deleteProductToUser();
+					break;
+				case 8:
+					startReadingSession();
 					break;
 				default:
 					System.out.println(controller.getProductsInfo());
@@ -127,6 +135,60 @@ public class Main{
 
 
 
+	}
+
+	public void startReadingSession(){
+		String[] userAndProductId=requestUserAndProductId();
+		if(!userAndProductId[0].equals("")){
+			String option="";
+			boolean execute=true;
+			Object []readingSessionInfo=controller.getReadingSessionInfo(userAndProductId[1]);
+			int numPages= (int) readingSessionInfo[1];
+			int currentPage=1;
+			
+
+			String name=(String)readingSessionInfo[0];
+			
+			while(execute){
+				boolean ad=controller.readingSessionAd(userAndProductId[0],userAndProductId[1],currentPage);
+				if(ad){
+					System.out.println("");
+					System.out.println(controller.getAd());
+					System.out.println("");
+				}
+				System.out.println("Reading session in progress\n");
+				System.out.println("Reading: "+ name);
+				System.out.println("Page: "+currentPage);
+				option=reader.next();
+				
+				if(option.equalsIgnoreCase("S")){
+					if(currentPage<numPages){
+						currentPage++;
+					}
+				}
+
+				if(option.equalsIgnoreCase("A")){
+					if(currentPage>1){
+						currentPage--;
+					}
+				}
+				if(option.equalsIgnoreCase("B")){
+					execute=false;
+				}
+
+				if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") )){
+					System.out.println("Invalid Option");
+				}
+				
+
+
+			}
+
+
+
+
+
+		}
 	}
 
 	/*||||||||||||||||||||||||||||VALIDATION FUNCTIONS||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
@@ -307,28 +369,10 @@ public class Main{
 		}
 	}
 	public void addProductToUser(){
-		boolean val1=false; //
-		boolean val2=false;
-		String userId="";
-		String productId="";
-		String msg="";
-		System.out.println("Type your id");
-		userId=reader.next();
-		if(! (controller.validateUserId(userId)) ){
-			val1=true;
-		}else{
-			System.out.println("There is no any user with this id");
-		}
-		if(val1){
-			System.out.println("Type the id of the product");
-			productId=reader.next();
-			if(controller.validateProductId(productId)){
-				msg=controller.addProductToUser(userId,productId);
-				System.out.println(msg);
-			}else{
-				System.out.println("There is no any product with this id");
-			}
-
+		String[] userAndProductId=requestUserAndProductId();
+		if(!userAndProductId[0].equals("")){
+			String msg=controller.addProductToUser(userAndProductId[0], userAndProductId[1]);
+			System.out.println(msg);
 		}
 
 	}
@@ -394,6 +438,53 @@ public class Main{
 		controller.initUsers(num);
 		System.out.println("The objects have been created succesfully");
 	}
+
+	public String requestUserId(){
+		String id="";
+		System.out.println("Type your id");
+		id=reader.next();
+		if(controller.validateUserId(id)){
+			id="";
+			System.out.println("There is no any user with this id");
+		}
+		return id;
+	}
+	public String requestProductId(){
+		String id="";
+		System.out.println("Type the product id");
+		id=reader.next();
+		if(!controller.validateProductId(id)){
+			id="";
+			System.out.println("There is no any product with this id");
+		}
+		return id;
+	}
+	public String[] requestUserAndProductId(){
+		String [] userAndProductId=new String[2];
+		String userId="";
+		String productId="";
+		userId=requestUserId(); //If the UserId is invalid, this will be an empty String
+		if(!userId.equals("")){ //if the Userid is valid, this will be a non empty String;
+			productId=requestProductId(); //in that case, the user will be type the product id
+		}
+		
+		if( !productId.equals("")){ //if the productId is valid, the array will contain both ids
+			userAndProductId[0]=userId;
+			userAndProductId[1]=productId;
+		}else{                      //otherwiese the array will contain empty strings;
+			userAndProductId[0]="";
+			userAndProductId[1]="";
+		}
+		return userAndProductId;
+	}
+	public void deleteProductToUser(){
+		String [] userAndProductId=requestUserAndProductId();
+		if(!userAndProductId[0].equals("")){
+			String msg=controller.deleteProductToUser(userAndProductId[0],userAndProductId[1]);
+			System.out.println(msg);
+		}
+	}
+
 
 
 

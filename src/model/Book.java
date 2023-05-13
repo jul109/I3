@@ -3,6 +3,7 @@ import java.util.GregorianCalendar;
 public final class Book extends BibliographicProduct{
 	private String review;
 	private BookGenre genre;
+	public static int NUM_PAGES_BEETWEEN_ADS=2;
 	Book(String id,String name, int numPages,double value, GregorianCalendar publicationDate, String url, BookGenre genre,String review ){
 		super(id,name,numPages, value, publicationDate, url);
 		this.review=review;

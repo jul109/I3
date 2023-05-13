@@ -5,10 +5,12 @@ public class Controller{
 	private ArrayList<User> users;
 	private ArrayList<BibliographicProduct> products;
 	private IdGenerator idGenerator;
+	private AdGenerator adGenerator;
 	public Controller(){
 		users=new ArrayList<User>();
 		products=new ArrayList<BibliographicProduct>();
 		idGenerator=new IdGenerator();
+		adGenerator=new AdGenerator();
 	}
 	public User searchUserById(String userId){
 		boolean isFound=false;
@@ -110,23 +112,16 @@ public class Controller{
 		return foundedProduct;
 	}
 
-	public String deleteProduct(String productId){
-		boolean isFound=false;
-		String msg="There is no any product with this id";
-		for(int i=0;i<products.size()&&!isFound;i++){
-			if(products.get(i).getId().equals(productId)){
-				isFound=true;
-				products.remove(i);
-				msg="The product was deleted succesfully";
-			}
-		}
+	public String deleteProductToUser(String userId, String productId){
+		String msg="";
+		User user=searchUserById(userId);
+		msg=user.deleteProduct(productId);
 		return msg;
 	}
 	public int getProductTypeFlag(String id){
 		int isValid=0;
 		BibliographicProduct product=searchProductById(id);
 		if(product!=null){
-			System.out.println("Hola");
 			if(product instanceof Book){
 				isValid=1;
 			}
@@ -247,6 +242,48 @@ public class Controller{
 			users.add(new User(name,userId,UserType.valueOf("REGULAR")));
 			users.add(new User(name,userId,UserType.valueOf("PREMIUM")));
 		}
+	}
+
+	public String deleteProduct(String id){
+		boolean wasFound=false;
+		String msg="There is no any product with this id";
+		for (int i=0;i<products.size() &&!wasFound ;i++ ) {
+			if(products.get(i).getId().equals(id)){
+				products.remove(i);
+				wasFound=true;
+				for(int j=0;j<users.size();j++){
+					deleteProduct(id);
+				}
+				msg="The product was deleted succesfully";
+			}
+		}
+		return msg;
+	}
+	public boolean readingSessionAd(String userId, String productId, int page){
+		User user=searchUserById(userId);
+		boolean flag=user.readPage(productId,page);
+		return flag;
+		
+	}
+
+	public Object[] getReadingSessionInfo(String productId){
+		int pages=0;
+		String name="";
+		Object []info=new Object[2];
+		boolean found=false;
+		for(int i=0;i<products.size()&&!found;i++){
+			if(products.get(i).getId().equals(productId)){
+				pages= products.get(i).getNumPages();
+				name=products.get(i).getName();
+				found=true;
+			}
+		}
+		info[0]=name;
+		info[1]=pages;
+		return info;
+	}
+	public String getAd(){
+		return adGenerator.getAd();
 	}
 
 

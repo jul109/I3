@@ -103,6 +103,32 @@ public class User{
 		return isPossibleToAdd;	
 	}
 
+	public String deleteProduct(String id){
+		String msg="There is no any magazine with this id in your library";
+		for (int i=0;i<products.size() ;i++ ) {
+			if( (products.get(i).getProduct() instanceof Magazine) &&   (products.get(i).getId().equals(id)) ){
+				((Magazine) products.get(i).getProduct() ).cancelSuscription();
+				products.remove(i);
+				msg="The product was deleted succesfully";
+			}
+		}
+		return msg;
+	}
+	public boolean readPage(String productId, int numPage){
+		boolean ad=false;
+		for (int i=0;i<products.size() ;i++ ) {
+			if(products.get(i).getId().equals(productId)){
+				BibliographicProductReference product= products.get(i);
+				ad=product.readPage(numPage);
+				
+			}
+		}
+		if(type.name().equals("PREMIUM")){
+			ad=false;
+		}
+		return ad;
+	}
+
 	
 
 

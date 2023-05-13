@@ -3,21 +3,30 @@ import java.util.GregorianCalendar;
 
 public class BibliographicProductReference {
     private BibliographicProduct product;
-    private boolean[] readPages;
     private GregorianCalendar operationDate;
     private double invoiceValue;
+    private int numReadPages;
 
     BibliographicProductReference(BibliographicProduct product){
     	this.product=product;
-    	readPages= new boolean[product.getNumPages()+1];
+        numReadPages=0;
     	invoiceValue= product.getValue();
     	operationDate= new GregorianCalendar();
     }
-    public void readPage(int numPage){
-    	if(!readPages[numPage]){
-    		readPages[numPage]=true;
-    		product.readNewPage();
-    	}
+    public boolean readPage(int numPage){
+        boolean ad=false;
+        if(numPage>numReadPages){
+            numReadPages=numPage;
+            product.readNewPage();
+            if(product instanceof Magazine && (numReadPages%Magazine.NUM_PAGES_BEETWEEN_ADS==0) ){
+                ad=true;
+                System.out.println(Magazine.NUM_PAGES_BEETWEEN_ADS);
+            }
+            if(product instanceof Book&& (numReadPages%Book.NUM_PAGES_BEETWEEN_ADS==0)){
+                ad=true;
+            }
+        }
+        return ad;
     }
     public BibliographicProduct getProduct(){
     	return this.product;
@@ -25,6 +34,8 @@ public class BibliographicProductReference {
     public String getId(){
     	return this.product.getId();
     }
+
+
     
 
 }

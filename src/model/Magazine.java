@@ -3,6 +3,7 @@ import java.util.GregorianCalendar;
 public final class Magazine extends BibliographicProduct{
 	private String publicationFrequency;
 	private MagazineCategory category;
+	public static int NUM_PAGES_BEETWEEN_ADS=5;
 	Magazine(String id,String name, int numPages,double value, GregorianCalendar publicationDate, String url,MagazineCategory category, String publicationFrequency ){
 		super(id,name,numPages, value, publicationDate, url);
 		this.publicationFrequency=publicationFrequency;
@@ -21,6 +22,9 @@ public final class Magazine extends BibliographicProduct{
 
 	public void setCategory(MagazineCategory category) {
 	    this.category = category;
+	}
+	public void cancelSuscription(){
+		this.solds--;
 	}
     @Override
 	public String getInfo() {
