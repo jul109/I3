@@ -6,12 +6,24 @@ public class Controller{
 	private ArrayList<BibliographicProduct> products;
 	private IdGenerator idGenerator;
 	private AdGenerator adGenerator;
+	/**
+ 	* Initializes a new Controller object with empty lists of users and products 
+ 	*and new instances of IdGenerator and AdGenerator.
+ 	*/
+
 	public Controller(){
 		users=new ArrayList<User>();
 		products=new ArrayList<BibliographicProduct>();
 		idGenerator=new IdGenerator();
 		adGenerator=new AdGenerator();
 	}
+	/**
+ 	* Searches for a user with the given user ID in the list of users. Returns the found User object or null if not found.
+ 	*
+ 	* @param userId the user ID to search for
+ 	* @return the found User object or null if not found
+ 	*/
+
 	public User searchUserById(String userId){
 		boolean isFound=false;
 		User userFounded=null;
@@ -23,6 +35,14 @@ public class Controller{
 		}
 		return userFounded;
 	}
+	/**
+ 	* Validates a given user ID by checking if it exists in the list of users. 
+ 	*Returns true if the user ID is not found and false if it is found.
+ 	*
+ 	* @param userId the user ID to validate
+ 	* @return true if the user ID is not found and false if it is found
+ 	*/
+
 	public boolean validateUserId(String userId){
 		User user=searchUserById(userId);
 		boolean isValid=true;
@@ -31,6 +51,13 @@ public class Controller{
 		}
 		return isValid;
 	}
+	/**
+ 	* Validates a given product ID by checking if it exists in the list of products using the `searchProductById` method. Returns true if the product ID is found and false if it is not found.
+ 	*
+ 	* @param productId the product ID to validate
+ 	* @return true if the product ID is found and false if it is not found
+ 	*/
+
 
 	public boolean validateProductId(String productId){
 		BibliographicProduct product=searchProductById(productId);
@@ -40,6 +67,15 @@ public class Controller{
 		}
 		return isValid;
 	}
+	/**
+ 	* Adds a new user with the given name, user ID, and user type to the list of users if the user ID is valid. Returns a message indicating success or failure.
+ 	*
+ 	* @param name the name of the new user
+ 	* @param userId the user ID of the new user
+ 	* @param userTypeInStr the user type of the new user as a string
+ 	* @return a message indicating success or failure
+ 	*/
+
 	public String addUser(String name, String userId, String userTypeInStr){
 		boolean isValid=validateUserId(userId);
 		String msg="";
@@ -52,6 +88,20 @@ public class Controller{
   		}	
   		return msg;
 	}
+
+	/**
+ 	* Adds a new book with the given parameters to the list of products if a new ID can be generated. Returns a message indicating success or failure.
+ 	*
+ 	* @param name the name of the book
+ 	* @param numPages the number of pages in the book
+ 	* @param value the value of the book
+ 	* @param publicationDate the publication date of the book
+ 	* @param url the URL of the book
+ 	* @param genreInStr the genre of the book as a string
+ 	* @param review a review of the book
+ 	* @return a message indicating success or failure
+ 	*/
+
 
 	public String addBook(String name, int numPages,double value, GregorianCalendar publicationDate, String url, String genreInStr,String review){
 		String msg="";
@@ -66,6 +116,20 @@ public class Controller{
 		return msg;
 
 	}
+
+	/**
+ 	* Adds a new magazine with the given parameters to the list of products if a new ID can be generated. Returns a message indicating success or failure.
+ 	*
+ 	* @param name the name of the magazine
+ 	* @param numPages the number of pages in the magazine
+ 	* @param value the value of the magazine
+ 	* @param publicationDate the publication date of the magazine
+ 	* @param url the URL of the magazine
+ 	* @param categoryInStr the category of the magazine as a string
+ 	* @param publicationFrequency the publication frequency of the magazine
+ 	* @return a message indicating success or failure
+ 	*/
+
 	public String addMagazine(String name, int numPages,double value, GregorianCalendar publicationDate, String url,String categoryInStr, String publicationFrequency){
 		String msg="";
 		MagazineCategory category= MagazineCategory.valueOf(categoryInStr.toUpperCase());
@@ -79,6 +143,14 @@ public class Controller{
 		return msg;
 	}
 
+	/**
+ 	* Adds a product to a user's list of products.
+ 	*
+ 	* @param userId the ID of the user
+ 	* @param productId the ID of the product to add
+ 	* @return a message indicating whether the product was successfully added
+ 	*/
+
 	public String addProductToUser(String userId, String productId){
 		BibliographicProduct product=searchProductById(productId);
 		User user=searchUserById(userId);
@@ -86,6 +158,12 @@ public class Controller{
 		msg=user.addProduct(product);
 		return msg;
 	}
+
+	/**
+ 	* Returns an array of strings representing the names of all book genres.
+ 	*
+ 	* @return an array of strings representing the names of all book genres
+ 	*/
 	public String[] getBookGenresInStr(){
 		BookGenre genres[]=BookGenre.values();
 		String genresInStr[]=new String[genres.length];
@@ -94,6 +172,11 @@ public class Controller{
 		}
 		return genresInStr;
 	}
+	/**
+ 	* Returns an array of strings representing the names of all magazine categories.
+ 	*
+ 	* @return an array of strings representing the names of all magazine categories
+ 	*/
 	public String[] getMagazineCategoriesInStr(){
 		MagazineCategory categories[]=MagazineCategory.values();
 		String categoriesInStr[]=new String[categories.length];
@@ -102,6 +185,13 @@ public class Controller{
 		}
 		return categoriesInStr;
 	}
+	/**
+ 	* Searches for a product by its ID.
+ 	*
+ 	* @param id the ID of the product to search for
+ 	* @return the product with the specified ID, or null if no such product is found
+ 	*/
+
 	public BibliographicProduct searchProductById(String id){
 		BibliographicProduct foundedProduct=null;
 		for (int i=0;i<products.size() ;i++ ) {
@@ -111,6 +201,13 @@ public class Controller{
 		}
 		return foundedProduct;
 	}
+	/**
+ 	* Deletes a product from a user's list of products.
+ 	* The product must be a magazine.
+ 	* @param userId the ID of the user
+ 	* @param productId the ID of the product to delete
+ 	* @return a message indicating whether the product was successfully deleted
+ 	*/
 
 	public String deleteProductToUser(String userId, String productId){
 		String msg="";
@@ -118,6 +215,12 @@ public class Controller{
 		msg=user.deleteProduct(productId);
 		return msg;
 	}
+	/**
+ 	* Returns an integer indicating the type of a product.
+ 	*
+ 	* @param id the ID of the product
+ 	* @return 0 if the product is not found, 1 if the product is a book, 2 if the product is a magazine
+ 	*/
 	public int getProductTypeFlag(String id){
 		int isValid=0;
 		BibliographicProduct product=searchProductById(id);
@@ -139,11 +242,24 @@ public class Controller{
 		}
 		return msg;
 	}
+ 	
+ 	/**
+ 	* Returns an array of strings representing the names of all user types.
+ 	*
+ 	* @return an array of strings representing the names of all user types
+ 	*/
+
 	public String[] getUserTypesInStr(){
 		String[] types={"PREMIUM", "REGULAR"};
 		return types;
 	}
-
+	/**
+ 	* Modifies a product by updating one of its fields.
+ 	*
+ 	* @param productId the ID of the product to modify
+ 	* @param field the field to update (1 for name, 2 for URL, 3 for genre/category, 4 for review/publication frequency)
+ 	* @param newStatus the new value to set for the specified field
+ 	*/
 	public void modifyProduct(String productId, int field, String newStatus){
 		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //1-4
@@ -176,6 +292,14 @@ public class Controller{
 				break;				
 		}
 	}
+	/**
+ 	* Modifies a product by updating one of its fields.
+ 	*
+ 	* @param productId the ID of the product to modify
+ 	* @param field the field to update (5 for number of pages, 6 for number of read pages, 7 for number of solds)
+ 	* @param newStatus the new value to set for the specified field
+ 	*/
+
 	public void modifyProduct(String productId, int field, int newStatus){
 		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //5-7
@@ -191,6 +315,13 @@ public class Controller{
 				
 		}
 	}
+	/**
+ 	* Modifies a product by updating one of its fields.
+ 	*
+ 	* @param productId the ID of the product to modify
+ 	* @param field the field to update (8 for value)
+ 	* @param newStatus the new value to set for the specified field
+ 	*/
 	public void modifyProduct(String productId, int field, double newStatus ){
 		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //8
@@ -199,6 +330,13 @@ public class Controller{
 				break;
 		}
 	}
+	/**
+ 	* Modifies a product by updating one of its fields.
+ 	*
+ 	* @param productId the ID of the product to modify
+ 	* @param field the field to update (9 for publication date)
+ 	* @param newStatus the new value to set for the specified field
+ 	*/
 	public void modifyProduct(String productId, int field, GregorianCalendar newStatus){
 		BibliographicProduct product=searchProductById(productId);
 		switch (field) { //9
@@ -208,6 +346,12 @@ public class Controller{
 		}
 
 	}
+	/**
+ 	* Initializes objects by creating a specified number products(books/magazines). It also register a regular user
+ 	* with id 1, and a premium user with id 2
+ 	* 
+ 	* @param num the number of products to create
+ 	*/
 
 	public void initObjects(int num){
 		initUsers();
@@ -244,7 +388,9 @@ public class Controller{
 		}
 		
 	}
-	
+	/**
+ 	* Initializes users by creating two users with id=1 and id=2 if they do not already exist.
+ 	*/
 	public void initUsers(){
 		if(searchUserById("1")==null){
 			users.add(new User("Pedroregular","1",UserType.valueOf("REGULAR")));
@@ -253,6 +399,12 @@ public class Controller{
 			users.add(new User("pedro premium","2",UserType.valueOf("PREMIUM")));
 		}
 	}
+	/**
+ 	* Deletes a product by its ID.
+ 	*
+ 	* @param id the ID of the product to delete
+ 	* @return a message indicating whether the product was successfully deleted
+ 	*/
 
 	public String deleteProduct(String id){
 		boolean wasFound=false;
@@ -275,12 +427,27 @@ public class Controller{
 		}
 		return msg;
 	}
+	/**
+ 	* Determines whether an advertisement should be shown during a reading session.
+ 	*
+ 	* @param userId the ID of the user
+ 	* @param productId the ID of the product
+ 	* @param page the number of readPages
+ 	* @return true if an advertisement should be shown, false otherwise
+ 	*/
+
 	public boolean readingSessionAd(String userId, String productId, int page){
 		User user=searchUserById(userId);
 		boolean flag=user.readPage(productId,page);
 		return flag;
 		
 	}
+	/**
+ 	* Returns information about a reading session for a product.
+ 	*
+ 	* @param productId the ID of the product
+ 	* @return an array containing the name and number of pages of the product
+ 	*/
 
 	public Object[] getReadingSessionInfo(String productId){
 		int pages=0;
@@ -298,15 +465,33 @@ public class Controller{
 		info[1]=pages;
 		return info;
 	}
+	/**
+ 	* Returns an advertisement.
+ 	*
+ 	* @return a string representing an advertisement
+ 	*/
 	public String getAd(){
 		return adGenerator.getAd();
 	}
-
+	/**
+ 	* Returns a user's library.
+ 	*
+ 	* @param userId the ID of the user
+ 	* @return a 3D array representing the user's library
+ 	*/
 	public String[][][] getLibrary(String userId){
 		User user= searchUserById(userId);
 		String[][][] library=user.getLibrary();
 		return library;
 	}
+
+	/**
+ 	* Determines if a user has a specified product.
+ 	*
+ 	* @param userId    the ID of the user to search for
+ 	* @param productId the ID of the product to search for
+ 	* @return true if the user has the specified product, false otherwise
+ 	*/
 	public boolean userHasProduct(String userId,String productId){
 		boolean flag=false;
 		User user=searchUserById(userId);

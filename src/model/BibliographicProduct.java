@@ -12,6 +12,16 @@ public abstract class BibliographicProduct{
 	protected double value;
 	protected int solds;
 	private ArrayList<User> users;
+	/**
+ 	* It is used to create Books and Magazines
+ 	*
+ 	* @param id              the ID of the bibliographic product
+ 	* @param name            the name of the bibliographic product
+ 	* @param numPages        the number of pages in the bibliographic product
+ 	* @param value           the value of the bibliographic product
+ 	* @param publicationDate the publication date of the bibliographic product
+ 	* @param url             the URL of the bibliographic product
+ 	*/
 	BibliographicProduct(String id,String name, int numPages,double value, GregorianCalendar publicationDate, String url){
 		this.name=name;
 		this.numPages=numPages;
@@ -81,12 +91,12 @@ public abstract class BibliographicProduct{
 	public void setSolds(int solds) {
 	    this.solds = solds;
 	}
+	/**
+ 	* Increments in one the number of pages read by users
+ 	*/
 
 	public void readNewPage(){
 		readPages++;
-	}
-	public void setId(String id){
-		this.id=id;
 	}
 
 	/**

@@ -15,6 +15,13 @@ public class Main{
 
 
 	}
+
+	/**
+	* Displays a menu to the user and allows them to interact with the system.
+ 	* The user can choose from several options to manage users and bibliographic products.
+ 	*/
+ 
+
 	public void menu(){
 		boolean execute=true;
 		int option;
@@ -22,7 +29,7 @@ public class Main{
 			System.out.println("Type a number");
 			System.out.println("1 to register a user");
 			System.out.println("2 to register a bibliographic product");
-			System.out.println("3 to modify a modify a bibliographic product");
+			System.out.println("3 to modify a bibliographic product");
 			System.out.println("4 to delete a bibliographic product");
 			System.out.println("5 to create biliographic and user objects");
 			System.out.println("6 to buy a book or magazine");
@@ -55,17 +62,21 @@ public class Main{
 				case 8:
 					showUserLibrary();
 					break;
-				case 9:
-					
-					break;
 				default:
-					System.out.println(controller.getProductsInfo());
+					System.out.println("Invalid option");
+					break;	
 			}
 			reader.nextLine();
 		}
 
 
 	}
+	/**
+	* Prompts the user to enter their name, ID, and user type.
+ 	* Adds a new user to the system with the provided information.
+ 	*/
+
+
 	public void addUser(){
 		String name="";
 		String id="";
@@ -82,6 +93,14 @@ public class Main{
 		System.out.println(msg);
 
 	}
+
+	/**
+	* Prompts the user to enter information about a new bibliographic product,
+ 	* including its name, number of pages, value, publication date, and URL.
+ 	* The user can choose to add either a book or a magazine.
+ 	*/
+
+
 	public void addBibliographicProduct(){
 		reader.nextLine();
 		String name="";
@@ -141,54 +160,182 @@ public class Main{
 
 	}
 
-	public void startReadingSession(String userId, String productId){
-		String option="";
-		boolean execute=true;
-		Object []readingSessionInfo=controller.getReadingSessionInfo(productId);
-		int numPages= (int) readingSessionInfo[1];
-		String name=(String)readingSessionInfo[0];
-		int currentPage=1;
-		while(execute){
-			boolean ad=controller.readingSessionAd(userId,productId,currentPage);
-			if(ad){
-				System.out.println("");
-				System.out.println(controller.getAd());
-				System.out.println("");
+	/**
+	* Prompts the user to enter the ID of the product they want to modify.
+ 	* Validates that a product with the given ID exists and, if so,
+ 	* calls the `requestFieldToModify()` method to allow the user to modify the product.
+ 	*/
+
+
+
+	public void validateProductToModify(){
+		String id="";
+		System.out.println("Type the id of the product");
+		id=reader.next();
+		int productTypeFlag= controller.getProductTypeFlag(id);
+		if(productTypeFlag==0){
+			System.out.println("There is no any product with this id");
+		}else{
+			requestFieldToModify(id, productTypeFlag);
+		}
+	}
+
+	/**
+ 	* Prompts the user to choose which field of the product they want to modify.
+    * Calls the `modifyProduct()` method to perform the modification.
+    *
+    * @param productId The ID of the product to modify.
+    * @param productTypeFlag An integer indicating the type of product (book or magazine).
+    */
+
+
+	public void requestFieldToModify(String productId, int productTypeFlag){
+
+		int option=-1;
+		while(  !(1<=option &&option<=9)){
+			System.out.println("Type an integer according to the field that you want to modify");
+			System.out.println("1. name");
+			System.out.println("2. url");
+			System.out.println("3. genre (book) /category (magazine)");
+			System.out.println("4. review (book)/publicationFrequency (magazine)");
+			System.out.println("5. number of pages");
+			System.out.println("6. number of read pages");
+			System.out.println("7. number of solds");
+			System.out.println("8. price (book) / suscription cost (magazine)");
+			System.out.println("9 publication date");
+			option=validatePositiveInt();
+			if(  !(1<=option &&option<=9) ){
+				System.out.println("This is not a possible option");
 			}
-			System.out.println("Reading session in progress\n");
-			System.out.println("Reading: "+ name);
-			System.out.println("Page: "+currentPage);
-			System.out.println("A to go to the previous page");
-			System.out.println("S to go the the next page");
-			System.out.println("B to exit");
-			option=reader.next();
-			
-			if(option.equalsIgnoreCase("S")){
-				if(currentPage<numPages){
-					currentPage++;
+		}
+		int dataType=0;
+		if(1<=option && option<=4){
+			dataType=1; //String
+		}
+		if(5<=option && option<=7){
+			dataType=2; //entero
+		}
+		if(option==8){
+			dataType=3; //double
+		}
+		if(option==9){
+			dataType=4; //gregorianCalendar
+		}
+		modifyProduct(productId, productTypeFlag, option, dataType);
+
+	}
+
+  	/**
+ 	* Prompts the user to enter the new value for the field they want to modify.
+ 	* Calls the `controller.modifyProduct()` method to perform the modification.
+ 	*
+ 	* @param productId The ID of the product to modify.
+ 	* @param productTypeFlag An integer indicating the type of product (book or magazine).
+ 	* @param field An integer indicating which field of the product to modify.
+ 	* @param dataType An integer indicating the data type of the new value.
+ 	*/
+         
+
+	public void modifyProduct(String productId, int productTypeFlag, int field, int dataType){
+		System.out.println("Type the new value of the field");
+		switch (dataType) {
+			case 1: //String
+				String newStrValue="";
+				if(field==3&&productTypeFlag==1){ //Book genre
+					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
 				}
-			}
-			if(option.equalsIgnoreCase("A")){
-				if(currentPage>1){
-					currentPage--;
+				if(field==3&&productTypeFlag==2){ //Magazine Category
+					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getMagazineCategoriesInStr());
 				}
-			}
-			if(option.equalsIgnoreCase("B")){
-				execute=false;
-			}
-			if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") )){
-				System.out.println("Invalid Option");
-			}
-			
+				if(field==1|| (field==4&& productTypeFlag==1)){ //product name|| book review
+					//reader.nextLine();
+					newStrValue=reader.next();
+
+				}
+				if(field==2){ //url
+					newStrValue=reader.next();
+				}
+				controller.modifyProduct(productId,field,newStrValue);
+				break;
+			case 2: //integer
+				int newIntValue=-1;
+				if(field==5){// num pages
+					newIntValue=validatePositiveInt(); 
+				}else{ //read Pages/solds
+					newIntValue=validateNonNegativeInt(); 
+				}
+				controller.modifyProduct(productId,field,newIntValue);
+
+				break;
+			case 3:
+				double newDoubleValue=-1; //price ||suscription
+				newDoubleValue=validateNonNegativeDouble();
+				controller.modifyProduct(productId,field,newDoubleValue);
+				break;
+			case 4:
+				GregorianCalendar newGregorianCalendarValue= requestDate();
+				controller.modifyProduct(productId,field,newGregorianCalendarValue);
+				break;
 
 		}
 
 
-
-
-
-		
 	}
+	/**
+ 	* Prompts the user to enter the ID of the product they want to delete.
+ 	* Calls the `controller.deleteProduct()` method to perform the deletion.
+ 	*/
+	public void deleteProduct(){
+		String msg="";
+		String id="";
+		System.out.println("Type the id of the product that you want to delete");
+		id=reader.next();
+		msg=controller.deleteProduct(id);
+		System.out.println(msg);
+	}
+	/**
+ 	* Prompts the user to enter the number of objects to create.
+ 	* Calls the `controller.initObjects()` method to create the specified number of books and magazines.
+ 	*/
+
+
+	public void createObjects(){
+		int num=0;
+		System.out.println("Type the number of objects that will be created");
+		num=validatePositiveInt();
+		controller.initObjects(num);
+		
+		System.out.println(num+ " books and "+num+ " magazines were registered ");
+		System.out.println("These products were added to the library of the premium user with id 2.");
+		System.out.println("If the number of product is not at the limit, the regular user with id 1 also has the same products in his library");
+	}
+ 
+	/**
+ 	* Adds a product to a user by requesting user and product IDs and calling the controller's `addProductToUser` method.
+ 	*/
+
+	public void addProductToUser(){
+		String[] userAndProductId=requestUserAndProductId();
+		if(!userAndProductId[0].equals("")){
+			String msg=controller.addProductToUser(userAndProductId[0], userAndProductId[1]);
+			System.out.println(msg);
+		}
+
+	}
+	/**
+ 	* Deletes a product from a user by requesting user and product IDs and calling the controller's `deleteProductToUser` method.
+ 	*/
+
+
+	public void deleteProductToUser(){
+		String [] userAndProductId=requestUserAndProductId();
+		if(!userAndProductId[0].equals("")){
+			String msg=controller.deleteProductToUser(userAndProductId[0],userAndProductId[1]);
+			System.out.println(msg);
+		}
+	}
+
+
 
 
 	public void showUserLibrary(){
@@ -252,29 +399,83 @@ public class Main{
 
 		}
 	}
+	/**
+ 	* Starts a reading session for a specified user and bibliographic product.
+ 	*
+ 	* @param userId    the ID of the user starting the reading session
+ 	* @param productId the ID of the bibliographic product to read
+ 	*/
 
 
-	public int[] validateCoordinates(){
-		int x=-1;
-		int y=-1;
-		while( !(0<=x &&x<=4)){
-			System.out.println("Type the coordinate X");
-			x=validateNonNegativeInt();
-			if( !(0<=x &&x<=4) ){
-				System.out.println("Invalid value");
+	public void startReadingSession(String userId, String productId){
+		String option="";
+		boolean execute=true;
+		Object []readingSessionInfo=controller.getReadingSessionInfo(productId);
+		int numPages= (int) readingSessionInfo[1];
+		String name=(String)readingSessionInfo[0];
+		int currentPage=1;
+		while(execute){
+			boolean ad=controller.readingSessionAd(userId,productId,currentPage);
+			if(ad){
+				System.out.println("");
+				System.out.println(controller.getAd());
+				System.out.println("");
 			}
-		}
-		while( !(0<=y &&y<=4) ) {
-			System.out.println("Type the coordinate Y");
-			y=validateNonNegativeInt();
-			if( !(0<=y &&y<=4) ){
-				System.out.println("Invalid value");
+			System.out.println("Reading session in progress\n");
+			System.out.println("Reading: "+ name);
+			System.out.println("Page: "+currentPage);
+			System.out.println("A to go to the previous page");
+			System.out.println("S to go the the next page");
+			System.out.println("B to exit");
+			option=reader.next();
+			
+			if(option.equalsIgnoreCase("S")){
+				if(currentPage<numPages){
+					currentPage++;
+				}
 			}
-		}
-		int[] coordinates={x,y};
-		return coordinates;
+			if(option.equalsIgnoreCase("A")){
+				if(currentPage>1){
+					currentPage--;
+				}
+			}
+			if(option.equalsIgnoreCase("B")){
+				execute=false;
+			}
+			if( !(option.equalsIgnoreCase("B")||option.equalsIgnoreCase("A") ||option.equalsIgnoreCase("S") )){
+				System.out.println("Invalid Option");
+			}
+			
 
+		}
+		
 	}
+	/**
+ 	* Displays a 2D array in a matrix format.
+ 	*
+ 	* @param matrix the 2D array to display
+ 	*/
+
+	public void showMatrix(String matrix[][]){
+		int row=matrix.length;
+		int col=matrix[0].length;
+		System.out.println("       0    1    2    3    4");
+
+		for (int i=0;i<row ;i++ ) {
+			System.out.print("  "+i+"  ");
+			for (int j=0;j<col ;j++ ) {
+				System.out.print(" "+matrix[i][j]+" ");
+
+			}
+			System.out.print("\n\n");
+		}
+	}
+
+
+
+
+
+
 
 	/*||||||||||||||||||||||||||||VALIDATION FUNCTIONS||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 	/** Reads the input of the user. If the user typed a non integer value, returns -1. Otherwise, returns the input.
@@ -375,6 +576,15 @@ public class Main{
 		GregorianCalendar date=new GregorianCalendar(year,month-1,day);
 		return date;
 	}
+	/**
+ 	* Prompts the user to enter a string and validates it against an array of possible valid options. Returns the validated string.
+ 	* This function puts the user in a loop until the input is valid.
+ 	* @param options an array of possible valid strings
+ 	* @return the validated string entered by the user
+ 	*/
+
+
+
 	public String validateStringGivenAnArrayOfPossibleValidStrings(String[]options){
 
 		boolean isValid=false;
@@ -397,148 +607,12 @@ public class Main{
 		return option;
 		
 	}
+	/**
+ 	* Prompts the user to enter their user ID and validates it using the controller's `validateUserId` method. Returns the validated user ID or an empty string
+ 	*
+ 	* @return the validated user ID entered by the user, or an empty string
+ 	*/
 
-	public void requestFieldToModify(String productId, int productTypeFlag){
-
-		int option=-1;
-		while(  !(1<=option &&option<=9)){
-			System.out.println("Type an integer according to the field that you want to modify");
-			System.out.println("1. name");
-			System.out.println("2. url");
-			System.out.println("3. genre (book) /category (magazine)");
-			System.out.println("4. review (book)/publicationFrequency (magazine)");
-			System.out.println("5. number of pages");
-			System.out.println("6. number of read pages");
-			System.out.println("7. number of solds");
-			System.out.println("8. price (book) / suscription cost (magazine)");
-			System.out.println("9 publication date");
-			option=validatePositiveInt();
-			if(  !(1<=option &&option<=9) ){
-				System.out.println("This is not a possible option");
-			}
-		}
-		int dataType=0;
-		if(1<=option && option<=4){
-			dataType=1; //String
-		}
-		if(5<=option && option<=7){
-			dataType=2; //entero
-		}
-		if(option==8){
-			dataType=3; //double
-		}
-		if(option==9){
-			dataType=4; //gregorianCalendar
-		}
-		modifyProduct(productId, productTypeFlag, option, dataType);
-
-
-
-
-
-	}//¿Como las personas adquieren los productos, con el id;
-	//Lo de la referencia sirve?
-	//Si se elimina un producto, se le elimina tambien a las personas personas que lo compraron?
-	//si se modifica el numero de paginas de un libro, se modifica tambien ese arreglo de booleanos, la cuenta regresa a 
-	//a 0 o que
-
-	public void validateProductToModify(){
-		String id="";
-		System.out.println("Type the id of the product");
-		id=reader.next();
-		int productTypeFlag= controller.getProductTypeFlag(id);
-		if(productTypeFlag==0){
-			System.out.println("There is no any product with this id");
-		}else{
-			requestFieldToModify(id, productTypeFlag);
-		}
-	}
-	public void addProductToUser(){
-		String[] userAndProductId=requestUserAndProductId();
-		if(!userAndProductId[0].equals("")){
-			String msg=controller.addProductToUser(userAndProductId[0], userAndProductId[1]);
-			System.out.println(msg);
-		}
-
-	}
-	public void showMatrix(String matrix[][]){
-		int row=matrix.length;
-		int col=matrix[0].length;
-		System.out.println("       0    1    2    3    4");
-
-		for (int i=0;i<row ;i++ ) {
-			System.out.print("  "+i+"  ");
-			for (int j=0;j<col ;j++ ) {
-				System.out.print(" "+matrix[i][j]+" ");
-
-			}
-			System.out.print("\n\n");
-		}
-	}
-
-	public void modifyProduct(String productId, int productTypeFlag, int field, int dataType){
-		System.out.println("Type the new value of the field");
-		switch (dataType) {
-			case 1: //String
-				String newStrValue="";
-				if(field==3&&productTypeFlag==1){ //Book genre
-					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getBookGenresInStr());
-				}
-				if(field==3&&productTypeFlag==2){ //Magazine Category
-					newStrValue=validateStringGivenAnArrayOfPossibleValidStrings(controller.getMagazineCategoriesInStr());
-				}
-				if(field==1|| (field==4&& productTypeFlag==1)){ //product name|| book review
-					//reader.nextLine();
-					newStrValue=reader.next();
-
-				}
-				if(field==2){ //url
-					newStrValue=reader.next();
-				}
-				controller.modifyProduct(productId,field,newStrValue);
-				break;
-			case 2: //integer
-				int newIntValue=-1;
-				if(field==5){// num pages
-					newIntValue=validatePositiveInt(); 
-				}else{ //read Pages/solds
-					newIntValue=validateNonNegativeInt(); 
-				}
-				controller.modifyProduct(productId,field,newIntValue);
-
-				break;
-			case 3:
-				double newDoubleValue=-1; //price ||suscription
-				newDoubleValue=validateNonNegativeDouble();
-				controller.modifyProduct(productId,field,newDoubleValue);
-				break;
-			case 4:
-				GregorianCalendar newGregorianCalendarValue= requestDate();
-				controller.modifyProduct(productId,field,newGregorianCalendarValue);
-				break;
-
-		}
-
-
-	}
-	public void deleteProduct(){
-		String msg="";
-		String id="";
-		System.out.println("Type the id of the product that you want to delete");
-		id=reader.next();
-		msg=controller.deleteProduct(id);
-		System.out.println(msg);
-	}
-	public void createObjects(){
-		int num=0;
-		System.out.println("Type the number of objects that will be created");
-		num=validatePositiveInt();
-		controller.initObjects(num);
-		
-		System.out.println(num+ " books and "+num+ " magazines were registered ");
-		System.out.println("These products were added to the library of the premium user with id 2.");
-		System.out.println("If the number of product is not at the limit, the regular user with id 1 also has the same products in his library");
-	}
 
 	public String requestUserId(){
 		String id="";
@@ -550,6 +624,13 @@ public class Main{
 		}
 		return id;
 	}
+	/**
+ 	* Prompts the user to enter a product ID and validates it using the controller's `validateProductId` method. Returns the validated product ID or an empty string if validation fails.
+ 	*
+ 	* @return the validated product ID entered by the user or an empty string if validation fails
+ 	*/
+
+
 	public String requestProductId(){
 		String id="";
 		System.out.println("Type the product id");
@@ -560,6 +641,13 @@ public class Main{
 		}
 		return id;
 	}
+	/**
+ 	* Requests and validates user and product IDs using the `requestUserId` and `requestProductId` methods. Returns an array containing the validated user and product IDs or empty strings if validation fails.
+ 	*
+ 	* @return an array containing the validated user and product IDs or empty strings if validation fails
+ 	*/
+
+
 	public String[] requestUserAndProductId(){
 		String [] userAndProductId=new String[2];
 		String userId="";
@@ -578,13 +666,36 @@ public class Main{
 		}
 		return userAndProductId;
 	}
-	public void deleteProductToUser(){
-		String [] userAndProductId=requestUserAndProductId();
-		if(!userAndProductId[0].equals("")){
-			String msg=controller.deleteProductToUser(userAndProductId[0],userAndProductId[1]);
-			System.out.println(msg);
+	/**
+ 	* Prompts the user to enter X and Y coordinates and validates them to be within the range of 0 to 4 using the `validateNonNegativeInt` method. Returns an array containing the validated coordinates. 
+ 	* This function puts the user in loop.
+	*
+ 	* @return an array containing the validated X and Y coordinates
+ 	*/
+
+
+	public int[] validateCoordinates(){
+		int x=-1;
+		int y=-1;
+		while( !(0<=x &&x<=4)){
+			System.out.println("Type the coordinate X");
+			x=validateNonNegativeInt();
+			if( !(0<=x &&x<=4) ){
+				System.out.println("Invalid value");
+			}
 		}
+		while( !(0<=y &&y<=4) ) {
+			System.out.println("Type the coordinate Y");
+			y=validateNonNegativeInt();
+			if( !(0<=y &&y<=4) ){
+				System.out.println("Invalid value");
+			}
+		}
+		int[] coordinates={x,y};
+		return coordinates;
+
 	}
+
 
 
 
