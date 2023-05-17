@@ -35,7 +35,11 @@ public class Main{
 			System.out.println("6 to buy a book or magazine");
 			System.out.println("7 to cancel a magazin suscription");
 			System.out.println("8 to see your library");
-			
+			System.out.println("9 to show the total number of read pages in books and magazines");
+			System.out.println("10 show which are the genres and categories with the greater number of read pages");
+			System.out.println("11 to show a top 5 of the most read books and magazines");
+			System.out.println("12 to show the number of sold books and the total sales value for each book genre");
+			System.out.println("13 to show the number of active suscriptions and total value paid in suscriptions");
 			option=reader.nextInt();
 			switch (option) {
 				case 1:
@@ -62,6 +66,22 @@ public class Main{
 				case 8:
 					showUserLibrary();
 					break;
+				case 9:
+					showReadPages();
+					break;
+				case 10:
+					showGenreAndCategoryWithTheGreaterNumberOfReadPages();
+					break;
+				case 11:
+					showTop5Products();
+					break;
+				case 12:
+					showBookSolds();
+					break;
+				case 13:
+					showMagazineSuscriptions();
+					break;
+
 				default:
 					System.out.println("Invalid option");
 					break;	
@@ -469,6 +489,27 @@ public class Main{
 			}
 			System.out.print("\n\n");
 		}
+	}
+
+	public void showReadPages(){
+		String msg=controller.getReadPagesInBooksAndMagazines();
+		System.out.println(msg);
+	}
+	public void showGenreAndCategoryWithTheGreaterNumberOfReadPages(){
+		String msg=controller.getGenreAndCategoryWithTheGreaterNumberOfReadPages();
+		System.out.println(msg);
+	}
+	public void showTop5Products(){
+		String msg=controller.getTop5();
+		System.out.println(msg);
+	}
+	public void showBookSolds(){
+		String msg=controller.getSoldsByGenre();
+		System.out.println(msg);
+	}
+	public void showMagazineSuscriptions(){
+		String msg=controller.getSuscriptionsByCategory();
+		System.out.println(msg);
 	}
 
 

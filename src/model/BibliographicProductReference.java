@@ -1,7 +1,7 @@
 package model;
 import java.util.GregorianCalendar;
 
-public class BibliographicProductReference {
+public class BibliographicProductReference implements Comparable<BibliographicProductReference> {
     private BibliographicProduct product;
     private GregorianCalendar operationDate;
     private double invoiceValue;
@@ -33,6 +33,9 @@ public class BibliographicProductReference {
     }
     public String getId(){
     	return this.product.getId();
+    }
+    public int compareTo(BibliographicProductReference product){
+        return this.getProduct().getPublicationDate().compareTo( product.getProduct().getPublicationDate() );
     }
 
 

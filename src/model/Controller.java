@@ -1,6 +1,7 @@
 package model;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Collections;
 public class Controller{
 	private ArrayList<User> users;
 	private ArrayList<BibliographicProduct> products;
@@ -237,7 +238,7 @@ public class Controller{
 	public String getProductsInfo(){
 		String msg="";
 		for(int i=0;i<products.size();i++){
-			msg+=products.get(i).getInfo();
+			msg+=products.get(i);
 			msg+="\n||||||||||||||||||";
 		}
 		return msg;
@@ -502,6 +503,144 @@ public class Controller{
 		}
 		return flag;
 	}
+
+	public String getReadPagesInBooksAndMagazines(){
+		int bookAcum=0;
+		int magazineAcum=0;
+		for(int i=0;i<products.size();i++){
+			if(products.get(i) instanceof Book){
+				bookAcum+=products.get(i).getReadPages();
+			}
+			if(products.get(i) instanceof Magazine){
+				magazineAcum+=products.get(i).getReadPages();
+			}
+		}
+
+		String msg="";
+		msg+="Books: "+bookAcum+"\n";
+		msg+="Magazines: "+magazineAcum+" \n";
+		msg+="Total: "+(bookAcum+magazineAcum)+"\n";
+		return msg;
+	}
+
+	public String getGenreAndCategoryWithTheGreaterNumberOfReadPages(){
+		int []acumGenre=new int[BookGenre.values().length];
+		int []acumCategory=new int[MagazineCategory.values().length];
+		String msg="";
+		for(int i=0;i<products.size();i++){
+			if(products.get(i) instanceof Book){
+				int pos=fromBookToAcumArrayPos(products.get(i));
+				acumGenre[pos]+=products.get(i).getReadPages();
+			}
+
+			if(products.get(i) instanceof Magazine){
+				int pos=fromMagazineToAcumArrayPos(products.get(i));
+				acumCategory[pos]+=products.get(i).getReadPages();
+			}
+		}
+		int maxPosGenre=getMaxPos(acumGenre);
+		int maxPosCategory=getMaxPos(acumCategory);
+		msg+="Book genre: "+getBookGenresInStr()[maxPosGenre]+" | Read pages: "+acumGenre[maxPosGenre]+"\n";
+		msg+="Magazine category: "+getMagazineCategoriesInStr()[maxPosCategory]+" | Read pages: "+acumCategory[maxPosCategory];
+		return msg;
+		
+
+
+	}
+	private int fromBookToAcumArrayPos(BibliographicProduct book){
+		int pos=-1;
+		boolean flag=false;
+		BookGenre[] genres=BookGenre.values();
+		for (int i=0;i<genres.length &&!flag;i++ ) {
+			if(genres[i]==((Book) book).getGenre()){
+				pos=i;
+				flag=true;
+			}
+		}
+		return pos;
+	}
+	private int fromMagazineToAcumArrayPos(BibliographicProduct magazine){
+		int pos=0;
+		boolean flag=false;
+		MagazineCategory[] categories=MagazineCategory.values();
+		for (int i=0;i<categories.length&&!flag;i++ ) {
+			if(categories[i]==((Magazine) magazine) .getCategory()){
+				pos=i;
+				flag=true;
+			}
+		}
+		return pos;
+	}
+	private int getMaxPos(int arr[]){
+		int maxPos=0;	
+		for(int i=0;i<arr.length;i++){
+			if(arr[maxPos]<arr[i]){
+				maxPos=i;
+			}
+		}
+		return maxPos;
+	}
+	public String getTop5(){
+		String msgBook="";
+		int bookAdditions=0;
+		int magazineAdditions=0;
+		String msgMagazine="";
+		Collections.sort(products);
+		for(int i=0;i<products.size()&& (magazineAdditions<5 ||bookAdditions<5 )  ;i++){
+			if(products.get(i) instanceof Book&&bookAdditions<5){
+				msgBook+="TOP: "+(bookAdditions+1)+"\n";
+				msgBook+=products.get(i)+"\n";
+				msgBook+="||||||||||||||||||||||||||||||\n";
+				bookAdditions++;
+			}
+			if(products.get(i) instanceof Magazine&&magazineAdditions<5){
+				msgMagazine+="TOP: "+(magazineAdditions+1)+"\n";
+				msgMagazine+=products.get(i)+"\n";
+				msgMagazine+="||||||||||||||||||||||||||||||\n";
+				magazineAdditions++;
+			}
+		}
+		return "BOOKS "+"\n"+msgBook+"\n"+"MAGAZINES"+"\n"+msgMagazine;
+
+	}
+
+	public String getSoldsByGenre(){
+		String[] genres=getBookGenresInStr();
+		String msg="";
+		int acumSolds[]=new int[BookGenre.values().length];
+		double acumValuePaid[]= new double[BookGenre.values().length];
+		for(int i=0;i<products.size();i++){
+			if(products.get(i) instanceof Book){
+				int pos=fromBookToAcumArrayPos(products.get(i));
+				acumSolds[pos]+=products.get(i).getSolds();
+				acumValuePaid[pos]+=products.get(i).getTotalValuePaid();
+			}
+		}
+		for (int i=0;i<genres.length;i++ ) {
+			msg+=genres[i]+" | Solds: "+acumSolds[i]+" | Total value paid: "+acumValuePaid[i];
+			msg+="\n";
+		}
+		return msg;
+	}
+	public String getSuscriptionsByCategory(){
+		String categories[]=getMagazineCategoriesInStr();
+		String msg="";
+		int []acumSolds=new int[categories.length];
+		double []acumValuePaid=new double[categories.length];
+		for (int i=0;i< products.size() ;i++ ) {
+			if(products.get(i) instanceof Magazine){
+				int pos=fromMagazineToAcumArrayPos(products.get(i));
+				acumSolds[pos]+=products.get(i).getSolds();
+				acumValuePaid[pos]+=products.get(i).getTotalValuePaid();
+			}
+		}
+		for (int i=0;i<categories.length ;i++ ) {
+			msg+=categories[i]+" | Solds: "+acumSolds[i]+" | Total value paid: "+acumValuePaid[i];
+			msg+="\n";
+		}
+		return msg;
+	}
+
 
 
 

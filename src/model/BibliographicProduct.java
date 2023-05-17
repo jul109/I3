@@ -2,7 +2,8 @@ package model;
 import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-public abstract class BibliographicProduct{
+import java.util.Collections;
+public abstract class BibliographicProduct implements Comparable<BibliographicProduct>{
 	protected String id;
 	protected String name;
 	protected int numPages;
@@ -11,7 +12,8 @@ public abstract class BibliographicProduct{
 	protected String url;
 	protected double value;
 	protected int solds;
-	private ArrayList<User> users;
+	//private ArrayList<User> users;
+	private double totalValuePaid;
 	/**
  	* It is used to create Books and Magazines
  	*
@@ -31,6 +33,7 @@ public abstract class BibliographicProduct{
 		numPages=0;
 		readPages=0;
 		solds=0;
+		totalValuePaid=0;
 		this.id=id;
 	}
 	public String getId() {
@@ -64,7 +67,9 @@ public abstract class BibliographicProduct{
 	public int getSolds() {
 	    return solds;
 	}
-
+	public double getTotalValuePaid(){
+		return totalValuePaid;
+	}
 	public void setName(String name) {
 	    this.name = name;
 	}
@@ -111,7 +116,19 @@ public abstract class BibliographicProduct{
     	return dateInTxtx;
 	}
 
-	public abstract String getInfo();
+	//public abstract String getInfo();
+	@Override
+	public int compareTo(BibliographicProduct product){
+		int ans;
+		ans = this.readPages - product.getReadPages();
+		return ans;
+	}
+
+	public void newSold(){
+		totalValuePaid+=this.value;
+		solds++;
+	}
+
 
 
 

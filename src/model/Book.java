@@ -25,7 +25,7 @@ public final class Book extends BibliographicProduct{
 	    this.genre = genre;
 	}
 	@Override
-	public String getInfo() {
+	public String toString() {
     String info = "";
     info += "ID: " + super.id + "\n";
     info += "Name: " + super.name + "\n";
@@ -34,7 +34,8 @@ public final class Book extends BibliographicProduct{
     info += "Publication Date: " + super.calendarToString(super.publicationDate) + "\n";
     info += "URL: " + super.url + "\n";
     info += "Genre: " + genre.name() + "\n";
-    info += "Review: " + review;
+    info += "Review: " + review+"\n";
+    info += "read pages: "+ super.readPages; 
     return info;
 }
 

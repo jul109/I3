@@ -47,6 +47,7 @@ public class User{
 				if(validateBookAddition()){
 					products.add(new BibliographicProductReference (product));
 					msg="The book was added succesfully";
+					product.newSold();
 				}else{
 					msg="The number of books in your account is at limit";
 				}
@@ -56,6 +57,7 @@ public class User{
 				if(validateMagazineAddition()){
 					products.add(new BibliographicProductReference (product));
 					msg="The magazine was added succesfully";
+					product.newSold();
 				}else{
 					msg="The number of magazines in your account is at limit";
 				}
@@ -195,7 +197,8 @@ public class User{
 			numberOfMatrices=1;
 		}
 		String matrix[][][]=new String[numberOfMatrices][MATRIX_SIZE][MATRIX_SIZE];
-		
+		sortProducts();
+
 		for(int h=0;h<numberOfMatrices;h++){
 			for (int i=0;i<MATRIX_SIZE ;i++ ) {
 				for (int j=0;j<MATRIX_SIZE ;j++ ) {
@@ -212,6 +215,28 @@ public class User{
 		return matrix;
 
 	}
+	public void sortProducts(){
+		boolean flag;
+		do{
+			flag=false;;
+			for (int i=0;i<products.size()-1;i++ ) {
+				BibliographicProduct product1= products.get(i).getProduct();
+				BibliographicProduct product2= products.get(i+1).getProduct();
+				GregorianCalendar date1=product1.getPublicationDate();
+				GregorianCalendar date2=product2.getPublicationDate();
+
+				if(date1.compareTo(date2)>0){
+					flag=true;
+					BibliographicProductReference aux=products.get(i+1);
+					products.set(i+1,products.get(i));
+					products.set(i,aux);
+				}
+
+			}
+		}while(flag==true);
+
+	}
+	
 
 	
 
