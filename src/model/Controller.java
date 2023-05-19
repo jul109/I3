@@ -586,6 +586,7 @@ public class Controller{
 		int magazineAdditions=0;
 		String msgMagazine="";
 		Collections.sort(products);
+	//	products.sort();
 		for(int i=0;i<products.size()&& (magazineAdditions<5 ||bookAdditions<5 )  ;i++){
 			if(products.get(i) instanceof Book&&bookAdditions<5){
 				msgBook+="TOP: "+(bookAdditions+1)+"\n";

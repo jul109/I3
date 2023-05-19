@@ -120,7 +120,7 @@ public abstract class BibliographicProduct implements Comparable<BibliographicPr
 	@Override
 	public int compareTo(BibliographicProduct product){
 		int ans;
-		ans = this.readPages - product.getReadPages();
+		ans = product.getReadPages()-this.readPages;
 		return ans;
 	}
 
