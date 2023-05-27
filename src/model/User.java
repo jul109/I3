@@ -215,6 +215,9 @@ public class User{
 		return matrix;
 
 	}
+	/**
+ 	* Sorts the products in ascending order by their publication date.
+ 	*/
 	public void sortProducts(){
 		boolean flag;
 		do{

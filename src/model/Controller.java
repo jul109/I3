@@ -194,13 +194,13 @@ public class Controller{
  	*/
 
 	public BibliographicProduct searchProductById(String id){
-		BibliographicProduct foundedProduct=null;
+		BibliographicProduct foundProduct=null;
 		for (int i=0;i<products.size() ;i++ ) {
 			if( products.get(i).getId().equals(id)) {
-				foundedProduct=products.get(i);
+				foundProduct=products.get(i);
 			}
 		}
-		return foundedProduct;
+		return foundProduct;
 	}
 	/**
  	* Deletes a product from a user's list of products.
@@ -503,6 +503,10 @@ public class Controller{
 		}
 		return flag;
 	}
+	/**
+ 	* Calculates the number of pages read in books and magazines.
+ 	* @return A string containing the number of pages read in books, magazines, and the total number of read pages.
+ 	*/
 
 	public String getReadPagesInBooksAndMagazines(){
 		int bookAcum=0;
@@ -522,6 +526,11 @@ public class Controller{
 		msg+="Total: "+(bookAcum+magazineAcum)+"\n";
 		return msg;
 	}
+
+	/**
+ 	* This method calculates the book genre and magazine category with the greatest number of read pages.
+ 	* @return A string containing the book genre and magazine category with the greatest number of read pages.
+ 	*/
 
 	public String getGenreAndCategoryWithTheGreaterNumberOfReadPages(){
 		int []acumGenre=new int[BookGenre.values().length];
@@ -547,6 +556,12 @@ public class Controller{
 
 
 	}
+	/**
+ 	* This method takes a book and returns a number representing the position of the book's genre in the BookGenre enumeration.
+	 * This number can be used as an index into an array. It was used for the tops.
+ 	* @param book The book whose genre position is to be found.
+ 	* @return The position of the book's genre in an array BookGenre enumeration.
+ 	*/
 	private int fromBookToAcumArrayPos(BibliographicProduct book){
 		int pos=-1;
 		boolean flag=false;
@@ -559,6 +574,12 @@ public class Controller{
 		}
 		return pos;
 	}
+	/**
+ 	* This method takes a magazine and returns a number representing the position of the magazine's category in the MagazineCategory enumeration.
+ 	* This number can be used as an index into an array.
+ 	* @param magazine The magazine whose category position is to be found.
+ 	* @return The position of the magazine's category in the MagazineCategory enumeration.
+ 	*/
 	private int fromMagazineToAcumArrayPos(BibliographicProduct magazine){
 		int pos=0;
 		boolean flag=false;
@@ -571,6 +592,11 @@ public class Controller{
 		}
 		return pos;
 	}
+	/**
+ 	* This method finds the position of the maximum value in an integer array.
+ 	* @param arr The integer array to search.
+ 	* @return The position of the maximum value in the array.
+ 	*/
 	private int getMaxPos(int arr[]){
 		int maxPos=0;	
 		for(int i=0;i<arr.length;i++){
@@ -580,6 +606,12 @@ public class Controller{
 		}
 		return maxPos;
 	}
+
+	/**
+ 	* This method generates a string containing the top 5 books and magazines according to the read.
+ 	* The products are sorted and the top 5 books and magazines are added to the string.
+ 	* @return A string containing the top 5 books and magazines.
+ 	*/
 	public String getTop5(){
 		String msgBook="";
 		int bookAdditions=0;
@@ -604,6 +636,12 @@ public class Controller{
 		return "BOOKS "+"\n"+msgBook+"\n"+"MAGAZINES"+"\n"+msgMagazine;
 
 	}
+	/**
+ * This method returns a String containing information about the number of sold books and the total value paid for each genre.
+ *
+ * @return A String containing information about sold books and total value paid for each genre.
+ */
+	
 
 	public String getSoldsByGenre(){
 		String[] genres=getBookGenresInStr();
@@ -623,6 +661,10 @@ public class Controller{
 		}
 		return msg;
 	}
+	/**
+ 	* This method generates a string containing the number of subscriptions and total value paid for each magazine category.
+ 	* @return A string containing the number of subscriptions and total value paid for each magazine category.
+ 	*/
 	public String getSuscriptionsByCategory(){
 		String categories[]=getMagazineCategoriesInStr();
 		String msg="";
@@ -636,7 +678,7 @@ public class Controller{
 			}
 		}
 		for (int i=0;i<categories.length ;i++ ) {
-			msg+=categories[i]+" | Solds: "+acumSolds[i]+" | Total value paid: "+acumValuePaid[i];
+			msg+=categories[i]+" | Suscriptions: "+acumSolds[i]+" | Total value paid: "+acumValuePaid[i];
 			msg+="\n";
 		}
 		return msg;

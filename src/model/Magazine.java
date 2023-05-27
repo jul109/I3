@@ -22,24 +22,52 @@ public final class Magazine extends BibliographicProduct{
 		this.publicationFrequency=publicationFrequency;
 		this.category=category;
 	}
+	/**
+ 	* Returns the publication frequency of this magazine
+ 	*
+ 	* @return the publication frequency of the magazine.
+ 	*/
 	public String getPublicationFrequency() {
     	return publicationFrequency;
 	}
+	/**
+ 	* Returns the category of this magazine.
+ 	*
+ 	* @return the category of this magazine
+ 	*/
 	public MagazineCategory getCategory() {
 	    return category;
 	}
+	/**
+ 	* Sets the publication frequency of the product.
+ 	*
+ 	* @param publicationFrequency the new publication frequency
+ 	*/
 
 	public void setPublicationFrequency(String publicationFrequency) {
 	    this.publicationFrequency = publicationFrequency;
 	}
+	/**
+ 	* Sets the category of the magazine
+ 	*
+ 	* @param category the new category
+ 	*/
 
 	public void setCategory(MagazineCategory category) {
 	    this.category = category;
 	}
+	/**
+ 	* Cancels a subscription decreasing the number of solds by one.
+ 	*/
 	public void cancelSuscription(){
 		this.solds--;
 	}
     @Override
+    /**
+ 	* Returns a string representation of the magazine
+ 	*
+ 	* @return a string that has the atributes of the magazine
+ 	*/
 	public String toString() {
 	    String info = "";
 	    info += "ID: " + super.id + "\n";

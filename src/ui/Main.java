@@ -354,9 +354,11 @@ public class Main{
 			System.out.println(msg);
 		}
 	}
-
-
-
+	/**
+ 	* This method displays the user's library and allows them to navigate through its pages.
+ 	* The user can choose to go to the previous or next page, exit the library view,
+ 	* start a reading session by typing the coordinates of a product or by typing its id.
+ 	*/
 
 	public void showUserLibrary(){
 		String userId=requestUserId();
@@ -490,23 +492,38 @@ public class Main{
 			System.out.print("\n\n");
 		}
 	}
+	/**
+ 	* This method displays the number of pages read in books and magazines.
+ 	*/
 
 	public void showReadPages(){
 		String msg=controller.getReadPagesInBooksAndMagazines();
 		System.out.println(msg);
 	}
+	/**
+ 	* This method displays the genre and category with the greatest number of read pages.
+ 	*/
 	public void showGenreAndCategoryWithTheGreaterNumberOfReadPages(){
 		String msg=controller.getGenreAndCategoryWithTheGreaterNumberOfReadPages();
 		System.out.println(msg);
 	}
+	/**
+ 	* This method displays the top 5 products with the greatest number of read pages.
+ 	*/
 	public void showTop5Products(){
 		String msg=controller.getTop5();
 		System.out.println(msg);
 	}
+	/**
+ 	* This method displays the number of books sold by genre.
+ 	*/
 	public void showBookSolds(){
 		String msg=controller.getSoldsByGenre();
 		System.out.println(msg);
 	}
+	/**
+ 	* This method displays the number of magazine subscriptions by category.
+ 	*/
 	public void showMagazineSuscriptions(){
 		String msg=controller.getSuscriptionsByCategory();
 		System.out.println(msg);
@@ -548,6 +565,11 @@ public class Main{
 		}
 		return value;
 	}
+	/**
+ 	* This method validates that the user's input is a non-negative integer.
+ 	* If the input is not valid, the user is prompted to enter a new value until a valid value is entered.
+ 	* @return The validated non-negative integer value entered by the user.
+ 	*/
 	public int validateNonNegativeInt(){
 		int value=-1;
 		while(value<0){

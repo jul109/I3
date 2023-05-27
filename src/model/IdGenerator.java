@@ -8,6 +8,9 @@ public class IdGenerator{
 	private String[] hexadecimalIds;
 	private String[] alphanumericIds;
 	public static final int LENGTH_OF_ID=3;
+	/**
+ 	* Constructs a new IdGenerator object and initializes the number of generated IDs to zero.
+ 	*/
 	IdGenerator(){
 		numOfHexadecimalGeneratedIds=0;
 		numOfAlphanumericGeneratedIds=0;
@@ -16,6 +19,12 @@ public class IdGenerator{
 
 
 	}
+	/**
+ 	* Initializes an array of possible IDs with the given character options.
+ 	*
+ 	* @param options the character options to use for generating IDs
+ 	* @return an array of possible IDs
+ 	*/
 	private String[] initPossibleIds(char[] options){
 		int numOfPossibleIds=(int)Math.pow(options.length,LENGTH_OF_ID);
 		int currentPositionOfArrayOfPossibleIds=0;
@@ -31,6 +40,11 @@ public class IdGenerator{
 		}
 		return possibleIds;
 	}
+	/**
+ 	* Generates an alphanumeric ID.
+ 	*
+ 	* @return an alphanumeric ID
+ 	*/
 	public String generateAlphanumericId(){
 		String id="";
 		if(numOfAlphanumericGeneratedIds<alphanumericIds.length){
@@ -39,6 +53,11 @@ public class IdGenerator{
 		}
 		return id;
 	}
+	/**
+ 	* Generates a hexadecimal ID.
+ 	*
+ 	* @return a hexadecimal ID
+ 	*/
 	public String generateHexadecimalId(){
 		String id="";
 		if(numOfHexadecimalGeneratedIds<hexadecimalIds.length){
