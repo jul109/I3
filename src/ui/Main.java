@@ -40,7 +40,8 @@ public class Main{
 			System.out.println("11 to show a top 5 of the most read books and magazines");
 			System.out.println("12 to show the number of sold books and the total sales value for each book genre");
 			System.out.println("13 to show the number of active suscriptions and total value paid in suscriptions");
-			option=reader.nextInt();
+			System.out.println("14 to exit the program");
+			option=validateIntegerInput();
 			switch (option) {
 				case 1:
 					addUser();
@@ -80,6 +81,9 @@ public class Main{
 					break;
 				case 13:
 					showMagazineSuscriptions();
+					break;
+				case 14:
+					execute=false;
 					break;
 
 				default:
@@ -298,6 +302,7 @@ public class Main{
 				break;
 
 		}
+		System.out.println("The change was made succesfully");
 
 
 	}

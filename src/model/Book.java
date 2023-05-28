@@ -3,7 +3,7 @@ import java.util.GregorianCalendar;
 public final class Book extends BibliographicProduct{
 	private String review;
 	private BookGenre genre;
-	public static int NUM_PAGES_BEETWEEN_ADS=2;
+	public static int NUM_PAGES_BEETWEEN_ADS=20;
 	/**
  	* Constructs a new Book object with the specified details.
  	*
