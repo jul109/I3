@@ -764,8 +764,14 @@ public class Main{
 
 	}
 
-	public int multiplication(int n, int m){
-		return n*m;
+	public double multiplication(int n, int m){
+
+		int result = n*m;
+
+
+		return result;
+
+
 	}
 
 
