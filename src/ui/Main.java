@@ -764,6 +764,10 @@ public class Main{
 
 	}
 
+	public int squareRoot (int x){
+		return x*x;
+	}
+
 
 
 
