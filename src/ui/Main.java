@@ -33,13 +33,15 @@ public class Main{
 			System.out.println("4 to delete a bibliographic product");
 			System.out.println("5 to create biliographic and user objects");
 			System.out.println("6 to buy a book or magazine");
-			System.out.println("7 to cancel a magazin suscription --");
+			System.out.println("7 to cancel a magazin suscription");
 			System.out.println("8 to see your library");
 			System.out.println("9 to show the total number of read pages in books and magazines");
 			System.out.println("10 show which are the genres and categories with the greater number of read pages");
 			System.out.println("11 to show a top 5 of the most read books and magazines");
 			System.out.println("12 to show the number of sold books and the total sales value for each book genre");
 			System.out.println("13 to show the number of active suscriptions and total value paid in suscriptions");
+			System.out.println("prom recursividad");
+			prom();
 			System.out.println("14 to exit the program");
 			option=validateIntegerInput();
 			switch (option) {
@@ -100,7 +102,12 @@ public class Main{
  	* Adds a new user to the system with the provided information.
  	*/
 
-
+	 public void prom() {
+        int []arregloE={1, 2, 3, 4, 5 , 6};
+        double resultado = controller.prom(arregloE, 0)/arregloE.length;
+        System.out.println("el promedio de el arreglo es: " + resultado);
+    }
+	
 	public void addUser(){
 		String name="";
 		String id="";
@@ -117,6 +124,7 @@ public class Main{
 		System.out.println(msg);
 
 	}
+
 
 	/**
 	* Prompts the user to enter information about a new bibliographic product,
