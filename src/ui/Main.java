@@ -26,7 +26,7 @@ public class Main{
 		boolean execute=true;
 		int option;
 		while(execute){
-			System.out.println("Type a number");
+			System.out.println("Type a number,");
 			System.out.println("1 to register a user");
 			System.out.println("2 to register a bibliographic product");
 			System.out.println("3 to modify a bibliographic product");
