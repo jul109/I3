@@ -41,6 +41,7 @@ public class Main{
 			System.out.println("12 to show the number of sold books and the total sales value for each book genre");
 			System.out.println("13 to show the number of active suscriptions and total value paid in suscriptions");
 			System.out.println("14 to exit the program");
+			System.out.println("calcular promedio");
 			option=validateIntegerInput();
 			switch (option) {
 				case 1:
@@ -85,7 +86,9 @@ public class Main{
 				case 14:
 					execute=false;
 					break;
-
+				case 15:
+					printAverage();
+					break;
 				default:
 					System.out.println("Invalid option");
 					break;	
@@ -100,6 +103,13 @@ public class Main{
  	* Adds a new user to the system with the provided information.
  	*/
 
+	public void printAverage(){
+		System.out.println("inserte el valor de a");
+		int a = reader.nextInt();
+		System.out.println("inserte el valor de b");
+		int b = reader.nextInt();
+		System.out.println((a+b)/2);
+	}
 
 	public void addUser(){
 		String name="";
