@@ -40,6 +40,8 @@ public class Main{
 			System.out.println("11 to show a top 5 of the most read books and magazines");
 			System.out.println("12 to show the number of sold books and the total sales value for each book genre");
 			System.out.println("13 to show the number of active suscriptions and total value paid in suscriptions");
+			System.out.println("prom recursividad");
+			prom();
 			System.out.println("14 to exit the program");
 			System.out.println("calcular promedio");
 			option=validateIntegerInput();
@@ -103,14 +105,30 @@ public class Main{
  	* Adds a new user to the system with the provided information.
  	*/
 
-	public void printAverage(){
-		System.out.println("inserte el valor de a");
-		int a = reader.nextInt();
-		System.out.println("inserte el valor de b");
-		int b = reader.nextInt();
-		System.out.println((a+b)/2);
-	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	public void addUser(){
 		String name="";
 		String id="";
@@ -127,6 +145,7 @@ public class Main{
 		System.out.println(msg);
 
 	}
+
 
 	/**
 	* Prompts the user to enter information about a new bibliographic product,
@@ -333,6 +352,12 @@ public class Main{
  	* Calls the `controller.initObjects()` method to create the specified number of books and magazines.
  	*/
 
+	 public void prom() {
+        int []arregloE={1, 2, 3, 4, 5 , 6};
+        double resultado = controller.prom(arregloE, 0)/arregloE.length;
+        System.out.println("el promedio de el arreglo es: " + resultado);
+    }
+	
 
 	public void createObjects(){
 		int num=0;

@@ -11,7 +11,14 @@ public class Controller{
  	* Initializes a new Controller object with empty lists of users and products 
  	*and new instances of IdGenerator and AdGenerator.
  	*/
+	 public double prom(int [] arreglo,int i) {
 
+        if (i==arreglo.length) {
+            return 0;
+          }  else{
+             return arreglo[i]+prom(arreglo,i+1);
+        }
+    }
 	public Controller(){
 		users=new ArrayList<User>();
 		products=new ArrayList<BibliographicProduct>();
