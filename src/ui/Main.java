@@ -102,12 +102,6 @@ public class Main{
  	* Adds a new user to the system with the provided information.
  	*/
 
-	 public void prom() {
-        int []arregloE={1, 2, 3, 4, 5 , 6};
-        double resultado = controller.prom(arregloE, 0)/arregloE.length;
-        System.out.println("el promedio de el arreglo es: " + resultado);
-    }
-	
 	public void addUser(){
 		String name="";
 		String id="";
@@ -331,6 +325,12 @@ public class Main{
  	* Calls the `controller.initObjects()` method to create the specified number of books and magazines.
  	*/
 
+	 public void prom() {
+        int []arregloE={1, 2, 3, 4, 5 , 6};
+        double resultado = controller.prom(arregloE, 0)/arregloE.length;
+        System.out.println("el promedio de el arreglo es: " + resultado);
+    }
+	
 
 	public void createObjects(){
 		int num=0;
