@@ -805,14 +805,21 @@ public class Main{
 
 	}
 
+
 	public double multiplication(int n, int m){
 
 		int result = n*m;
 
 
 		return result;
+	}
 
 
+
+
+	public int squareRoot (int x){
+		return x*x;
+	 
 	}
 
 
