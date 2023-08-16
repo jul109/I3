@@ -26,7 +26,7 @@ public class Main{
 		boolean execute=true;
 		int option;
 		while(execute){
-			System.out.println("Type a number");
+			System.out.println("Type a number,");
 			System.out.println("1 to register a user");
 			System.out.println("2 to register a bibliographic product");
 			System.out.println("3 to modify a bibliographic product");
@@ -40,7 +40,10 @@ public class Main{
 			System.out.println("11 to show a top 5 of the most read books and magazines");
 			System.out.println("12 to show the number of sold books and the total sales value for each book genre");
 			System.out.println("13 to show the number of active suscriptions and total value paid in suscriptions");
+			System.out.println("prom recursividad");
+			prom();
 			System.out.println("14 to exit the program");
+			System.out.println("calcular promedio");
 			option=validateIntegerInput();
 			switch (option) {
 				case 1:
@@ -85,7 +88,9 @@ public class Main{
 				case 14:
 					execute=false;
 					break;
-
+				case 15:
+					printAverage();
+					break;
 				default:
 					System.out.println("Invalid option");
 					break;	
@@ -101,6 +106,35 @@ public class Main{
  	*/
 
 
+
+	public void printAverage(){
+		System.out.println("valor a");
+		int a = scanner.nextInt();
+		System.out.println("valor b");
+		int b = scanner.nextInt();
+		System.out.println((a+b)/2);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	public void addUser(){
 		String name="";
 		String id="";
@@ -117,6 +151,7 @@ public class Main{
 		System.out.println(msg);
 
 	}
+
 
 	/**
 	* Prompts the user to enter information about a new bibliographic product,
@@ -323,6 +358,12 @@ public class Main{
  	* Calls the `controller.initObjects()` method to create the specified number of books and magazines.
  	*/
 
+	 public void prom() {
+        int []arregloE={1, 2, 3, 4, 5 , 6};
+        double resultado = controller.prom(arregloE, 0)/arregloE.length;
+        System.out.println("el promedio de el arreglo es: " + resultado);
+    }
+	
 
 	public void createObjects(){
 		int num=0;
@@ -762,6 +803,23 @@ public class Main{
 		int[] coordinates={x,y};
 		return coordinates;
 
+	}
+
+
+	public double multiplication(int n, int m){
+
+		int result = n*m;
+
+
+		return result;
+	}
+
+
+
+
+	public int squareRoot (int x){
+		return x*x;
+	 
 	}
 
 
