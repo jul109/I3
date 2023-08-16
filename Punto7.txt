@@ -1,0 +1,24 @@
+Corrección de errores:
+Cuando se trata de corregir errores en una versión existente del software, se incrementa 
+el número de versión de parche (Micro). Esto es porque las correcciones de errores 
+generalmente no introducen nuevas funcionalidades ni cambios significativos en la
+ estructura del software, sino que se centran en abordar problemas específicos que 
+han sido identificados. Al aumentar el número de versión de parche, estás indicando que 
+la versión actual se ha mejorado y se han solucionado problemas, pero no se han realizado 
+cambios importantes que requieran una actualización mayor. Por ejemplo, si tienes la versión 
+"1.2.3" y se corrige un error, la nueva versión podría ser "1.2.4".
+
+Nuevas características (Nuevo release):
+Cuando se desean agregar nuevas características y funcionalidades en un nuevo 
+lanzamiento del software, se incrementa el número de versión menor (Minor). Esto 
+se debe a que estás introduciendo cambios adicionales que mejoran la experiencia 
+del usuario y añaden nuevas capacidades al software. Al aumentar el número de versión 
+menor, estás comunicando que el software ha evolucionado y ha sido mejorado, pero aún 
+mantiene compatibilidad con versiones anteriores. Por ejemplo, si tienes la versión 
+"2.1.5" y estás agregando nuevas características, la próxima versión podría ser "2.2.0".
+
+El número de versión mayor (Major) se incrementaría en situaciones donde se realizan 
+cambios significativos en la funcionalidad o en la estructura del software que podrían 
+no ser compatibles con versiones anteriores. Esto podría ser el caso si se reorganiza 
+completamente la arquitectura del software, si las actualizaciones realizadas no son 
+retrocompatibles o si hay un cambio fundamental en el enfoque del software.
