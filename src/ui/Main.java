@@ -107,7 +107,13 @@ public class Main{
 
 
 
-
+	public void printAverage(){
+		System.out.println("valor a");
+		int a = scanner.nextInt();
+		System.out.println("valor b");
+		int b = scanner.nextInt();
+		System.out.println((a+b)/2);
+	}
 
 
 
